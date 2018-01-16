@@ -4,7 +4,8 @@
     "build": "npm run build:css && npm run build:js && npm run build:assets",
     "build:css": "parcel build scss/app.scss",
     "build:js": "parcel build js/app.js",
-    "build:assets": "rsync -av ./assets ./dist/",
+    "build:assets": "rsync -av --delete ./assets ./dist/",
+    "clean": "rm -rf ./dist ./.cache",
     "watch:css": "parcel scss/app.scss",
     "watch:js": "parcel js/app.js"
   },
