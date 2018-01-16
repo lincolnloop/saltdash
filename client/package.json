@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "postinstall": "npm run build",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "parcel build scss/app.scss",
+    "build:js": "parcel build js/app.js",
+    "watch:css": "parcel scss/app.scss",
+    "watch:js": "parcel js/app.js"
+  },
+  "dependencies": {
+    "bootstrap": "4.0.0-beta.3",
+    "jquery": "^3.2.1",
+    "node-sass": "^4.7.2",
+    "parcel-bundler": "^1.4.1",
+    "popper.js": "^1.12.9"
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0"
+  }
+}

@@ -1,0 +1,35 @@
+{% extends "dash/base.html" %}
+{% block title %}Jobs{% endblock %}
+{% block breadcrumbs %}
+<li>Jobs</li>
+{% endblock %}
+{% block extra-nav %}
+{% if has_system_jobs %}
+    <a class="btn btn-sm btn-outline-light" href="{% url "dash:job_list" %}">Hide system jobs</a>
+  {% else %}
+    <a class="btn btn-sm btn-outline-light" href="{% url "dash:job_list" %}?system">Show system jobs</a>
+  {% endif %}
+{% endblock %}
+
+{% block container %}
+  {% for job in job_list %}
+    <div class="card mb-4" id="{{ job.jid }}">
+      <div class="card-body">
+        {% if job.successes > 0 %}
+          <a href="{% url "dash:job_detail_success" jid=job.jid  %}" class="float-right badge badge-success" title="{{ job.successes }} minion{{ job.successes|pluralize }} succeeded">{{ job.successes }}</a>
+        {% endif %}
+        {% if job.failures > 0 %}
+          <a href="{% url "dash:job_detail_failed" jid=job.jid  %}" class="float-right badge badge-danger" title="{{ job.failures }} minion{{ job.failures|pluralize }} failed">{{ job.failures }}</a>
+        {% endif %}
+
+      {% include "dash/_job_summary.html" %}
+        <a href="{% url "dash:job_detail" jid=job.jid  %}" class="card-link">Results</a>
+      </div>
+      {% if job.completed %}
+        <div class="card-footer text-muted">
+          {{ job.completed }}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}

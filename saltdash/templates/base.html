@@ -1,0 +1,21 @@
+{% load static from staticfiles %}<html>
+<head>
+  <link rel="stylesheet" href="{% static "app.css" %}">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-light bg-primary navbar-expand-md mb-4">
+    <div class="container">
+      <a class="navbar-brand" href="/">Salt Dash</a>
+      <ul class="navbar-nav mr-auto">
+        {% block breadcrumbs %}{% endblock %}
+      </ul>
+      {% block extra-nav %}{% endblock %}
+    </div>
+  </nav>
+  <div class="container">
+    {% block container %}{% endblock %}
+  </div>
+  <script src="{% static "app.js" %}"></script>
+</body>
+</html>

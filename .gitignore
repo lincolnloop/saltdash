@@ -1,0 +1,5 @@
+/saltdash/settings/local.py
+
+node_modules
+client/.cache
+client/dist

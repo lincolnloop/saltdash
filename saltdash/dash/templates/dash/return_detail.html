@@ -1,0 +1,16 @@
+{% extends "dash/base.html" %}
+{% block title %}Jobs : {{ job.jid }} : {{ return.id }}{% endblock %}
+{% block breadcrumbs %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url "dash:job_list" %}">Jobs</a>
+  </li>
+  <li class="nav-item"><a class="nav-link" href="{% url "dash:job_detail" jid=job.jid %}">{{ job.jid }}</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url "dash:return_detail" pk=return.pk %}">{{ return.id }}</a></li>
+{% endblock %}
+
+{% block container %}
+  <div class="alert alert-secondary" role="alert">
+    {% include "dash/_job_summary.html" %}
+  </div>
+    {% include "dash/_return_card.html" %}
+{% endblock %}
