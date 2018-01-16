@@ -1,0 +1,19 @@
+{% extends "dash/base.html" %}
+{% block title %}Jobs{% endblock %}
+{% block nav-results-active %}active{% endblock %}
+{% block breadcrumbs %}
+  <span class="breadcrumb-item active">Results</span>
+{% endblock %}
+{% block extra-nav %}
+  {% if has_system_jobs %}
+    <a class="btn btn-sm btn-outline-light" href="{% url "dash:result_list" %}">Hide system jobs</a>
+  {% else %}
+    <a class="btn btn-sm btn-outline-light" href="{% url "dash:result_list" %}?system">Show system jobs</a>
+  {% endif %}
+{% endblock %}
+
+{% block container %}
+  {% for result in result_list %}
+    {% include "dash/_result_card.html" with collapsed="true" show_job="true" %}
+  {% endfor %}
+{% endblock %}

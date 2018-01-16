@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 
 
-class JobID(models.Model):
+class Job(models.Model):
     jid = models.CharField(verbose_name="job id", max_length=50, primary_key=True)
     load = JSONField()
 
@@ -36,7 +36,7 @@ class JobID(models.Model):
     @property
     def saltreturn_set(self):
         # Fake foreign key relation
-        return SaltReturn.objects.filter(jid=self.jid)
+        return Result.objects.filter(jid=self.jid)
 
     @cached_property
     def successes(self):
@@ -68,9 +68,9 @@ class JobID(models.Model):
         return val
 
 
-class SaltReturn(models.Model):
+class Result(models.Model):
     auto_id = models.AutoField(primary_key=True)
-    id = models.CharField("minion", max_length=100, db_index=True)
+    minion = models.CharField(max_length=100, db_index=True, db_column='id')
     # This can't be a foreign key due to the order Salt might insert data into
     # the tables.
     jid = models.CharField(verbose_name="job id", max_length=50, db_index=True)
@@ -88,14 +88,23 @@ class SaltReturn(models.Model):
         ordering = ['-completed']
 
     def __str__(self):
-        return f'{self.jid}: {self.fun} on {self.id}'
+        return f'{self.jid}: {self.fun} on {self.minion}'
 
     def get_absolute_url(self):
         return reverse('dash:return_detail', args=[self.pk])
 
     @cached_property
     def job(self):
-        return JobID.objects.filter(jid=self.jid).first()
+        try:
+            return Job.objects.get(jid=self.jid)
+        except Job.DoesNotExist:
+            return Job(jid=self.full_ret['jid'],
+                       load={"arg": self.full_ret.get('fun_args', []),
+                             "fun": self.full_ret['fun'],
+                             "jid": self.full_ret['jid'],
+                             "tgt": [self.full_ret['id']],
+                             "user": self.full_ret['user'],
+                             "tgt_type": "list"})
 
     @cached_property
     def return_val_as_json(self):

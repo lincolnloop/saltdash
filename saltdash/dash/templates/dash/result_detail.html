@@ -1,0 +1,15 @@
+{% extends "dash/base.html" %}
+{% block nav-results-active %}active{% endblock %}
+{% block title %}Jobs : {{ job.jid }} : {{ result.minion }}{% endblock %}
+{% block breadcrumbs %}
+  <a class="breadcrumb-item" href="{% url "dash:job_list" %}">Jobs</a>
+  <a class="breadcrumb-item" href="{% url "dash:job_detail" jid=job.jid %}">{{ job.jid }}</a>
+  <span class="breadcrumb-item active">{{ result.minion }}</span>
+{% endblock %}
+
+{% block container %}
+  <div class="alert alert-secondary" role="alert">
+    {% include "dash/_job_summary.html" %}
+  </div>
+  {% include "dash/_result_card.html" %}
+{% endblock %}

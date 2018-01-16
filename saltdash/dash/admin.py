@@ -4,14 +4,14 @@ from django.contrib.admin.decorators import register
 from . import models
 
 
-@register(models.SaltReturn)
-class SaltReturnAdmin(admin.ModelAdmin):
-    list_filter = ['success', 'fun', 'id']
-    list_display = ['jid', 'fun', 'id', 'completed', 'success']
+@register(models.Result)
+class ResultAdmin(admin.ModelAdmin):
+    list_filter = ['success', 'fun', 'minion']
+    list_display = ['jid', 'fun', 'minion', 'completed', 'success']
 
 
-@register(models.JobID)
-class JobIDAdmin(admin.ModelAdmin):
+@register(models.Job)
+class JobAdmin(admin.ModelAdmin):
     pass
 
 

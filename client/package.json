@@ -1,9 +1,10 @@
 {
   "scripts": {
     "postinstall": "npm run build",
-    "build": "npm run build:css && npm run build:js",
+    "build": "npm run build:css && npm run build:js && npm run build:assets",
     "build:css": "parcel build scss/app.scss",
     "build:js": "parcel build js/app.js",
+    "build:assets": "rsync -av ./assets ./dist/",
     "watch:css": "parcel scss/app.scss",
     "watch:js": "parcel js/app.js"
   },

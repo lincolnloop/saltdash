@@ -1,21 +1,37 @@
 {% load static from staticfiles %}<html>
 <head>
   <link rel="stylesheet" href="{% static "app.css" %}">
+  <link rel="shortcut icon" href="{% static "assets/icon.png" %}">
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <nav class="navbar navbar-inverse navbar-light bg-primary navbar-expand-md mb-4">
-    <div class="container">
-      <a class="navbar-brand" href="/">Salt Dash</a>
-      <ul class="navbar-nav mr-auto">
-        {% block breadcrumbs %}{% endblock %}
-      </ul>
-      {% block extra-nav %}{% endblock %}
-    </div>
-  </nav>
+<nav class="navbar navbar-dark bg-primary navbar-expand-md">
   <div class="container">
-    {% block container %}{% endblock %}
+    <a class="navbar-brand" href="/">
+      <img src="{% static "assets/icon.svg" %}" width="30" height="30" name="Salt Dash Icon">
+    </a>
+    <ul class="navbar-nav mr-auto">
+      {% block navigation %}
+        <li class="nav-item">
+          <a class="nav-link {% block nav-jobs-active %}{% endblock %}" href="{% url "dash:job_list" %}">Jobs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% block nav-results-active %}{% endblock %}" href="{% url "dash:result_list" %}">Results</a>
+        </li>
+      {% endblock %}
+    </ul>
+    {% block extra-nav %}{% endblock %}
   </div>
-  <script src="{% static "app.js" %}"></script>
+</nav>
+<nav class="breadcrumb mb-4">
+<div class="container">
+    {% block breadcrumbs %}{% endblock %}
+</div>
+</nav>
+<div class="container">
+
+  {% block container %}{% endblock %}
+</div>
+<script src="{% static "app.js" %}"></script>
 </body>
 </html>

@@ -1,40 +1,42 @@
 {% load dash_tags %}
-<ul class="list-unstyled">
-  {% for state in return.states %}
+<ul class="list-unstyled mt-2">
+  {% for state in result.states %}
     <li data-state-status="{{ state.status }}"
         class="collapse {% if state.status == 'failed' or state.status == 'changed' and not collapsed %}show{% endif %}">
-      <a href="#state-{{ return.pk }}-{{ forloop.counter }}"
-         data-toggle="collapse"
-         class="text-lg-left {% if state.success and not state.changed %}text-muted{% endif %}{% if state.changed %} text-success{% endif %}{% if state.success %} collapsed{% else %} text-danger{% endif %}">
-        {{ state.module }}.{{ state.function }} {{ state.id }}
-      </a>
+      <h5>
+        <a href="#state-{{ result.pk }}-{{ forloop.counter }}"
+           data-toggle="collapse"
+           class="text-lg-left {% if state.success and not state.changed %}text-muted{% endif %}{% if state.changed %} text-success{% endif %}{% if state.success %} collapsed{% else %} text-danger{% endif %}">
+          {{ state.module }}.{{ state.function }} {{ state.id }}
+        </a>
+      </h5>
       <small class="text-muted float-right">{{ state.duration }}ms</small>
-    <div id="state-{{ return.pk }}-{{ forloop.counter }}"
-         class="collapse">
-      <div class="row mb-2">
-        <div class="col col-md-5">
-          <dl>
-            <dt>comment</dt>
-            <dd><code class="text-muted">{{ state.comment }}</code></dd>
-            <dt>name</dt>
-            <dd><code class="text-muted">{{ state.name }}</code></dd>
-            <dt>sls</dt>
-            <dd><code class="text-muted">{{ state.sls }}</code></dd>
-
-          </dl>
-        </div>
-        {% if state.changes %}
-          <div class="col col-md-7">
+      <div id="state-{{ result.pk }}-{{ forloop.counter }}"
+           class="collapse">
+        <div class="row mb-2">
+          <div class="col col-md-5">
             <dl>
-              <dt>changes</dt>
-              <dd>
-                <pre><code>{{ state.changes|pretty_json }}</code></pre>
-              </dd>
-              </dl>
+              <dt>comment</dt>
+              <dd><code class="text-muted">{{ state.comment }}</code></dd>
+              <dt>name</dt>
+              <dd><code class="text-muted">{{ state.name }}</code></dd>
+              <dt>sls</dt>
+              <dd><code class="text-muted">{{ state.sls }}</code></dd>
+
+            </dl>
           </div>
-        {% endif %}
+          {% if state.changes %}
+            <div class="col col-md-7">
+              <dl>
+                <dt>changes</dt>
+                <dd>
+                  <pre><code>{{ state.changes|pretty_json }}</code></pre>
+                </dd>
+              </dl>
+            </div>
+          {% endif %}
+        </div>
       </div>
-    </div>
     </li>
   {% endfor %}
 </ul>

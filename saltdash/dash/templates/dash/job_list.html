@@ -1,10 +1,11 @@
 {% extends "dash/base.html" %}
 {% block title %}Jobs{% endblock %}
+{% block nav-jobs-active %}active{% endblock %}
 {% block breadcrumbs %}
-<li>Jobs</li>
+  <span class="breadcrumb-item active">Jobs</span>
 {% endblock %}
 {% block extra-nav %}
-{% if has_system_jobs %}
+  {% if has_system_jobs %}
     <a class="btn btn-sm btn-outline-light" href="{% url "dash:job_list" %}">Hide system jobs</a>
   {% else %}
     <a class="btn btn-sm btn-outline-light" href="{% url "dash:job_list" %}?system">Show system jobs</a>
@@ -22,8 +23,8 @@
           <a href="{% url "dash:job_detail_failed" jid=job.jid  %}" class="float-right badge badge-danger" title="{{ job.failures }} minion{{ job.failures|pluralize }} failed">{{ job.failures }}</a>
         {% endif %}
 
-      {% include "dash/_job_summary.html" %}
-        <a href="{% url "dash:job_detail" jid=job.jid  %}" class="card-link">Results</a>
+        {% include "dash/_job_summary.html" %}
+        <a href="{% url "dash:job_detail" jid=job.jid  %}" class="card-link">Results &rarr;</a>
       </div>
       {% if job.completed %}
         <div class="card-footer text-muted">

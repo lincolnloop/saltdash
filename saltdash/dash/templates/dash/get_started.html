@@ -1,0 +1,35 @@
+{% extends "dash/base.html" %}
+{% block title %}Get Started{% endblock %}
+
+{% block container %}
+  <div class="alert alert-danger" role="alert">
+    Uh-oh... Looks like Salt hasn't reported any data to the database yet.
+  </div>
+  {% if host == '127.0.0.1' or host == 'localhost' %}
+    <div class="alert alert-warning" role="alert">
+      You're using a database on <code>localhost</code>. This will only work if the Salt Master
+      on the same host.
+    </div>
+  {% endif %}
+  {% if not user %}
+    <div class="alert alert-warning" role="alert">
+      You haven't set a user for your database, you'll need to add one in the settings below.
+    </div>
+  {% endif %}
+  <h2>Be sure you've taken the following steps:</h2>
+  <ol>
+    <li>
+      Create <code>/etc/salt/master.d/saltdash.conf</code> with the this content (be sure to set your actual password):
+      <pre><code>
+master_job_cache: pgjsonb
+returner.pgjsonb.host: {{ host }}
+returner.pgjsonb.pass: **********
+returner.pgjsonb.db: {{ name }}
+returner.pgjsonb.port: {{ port }}
+returner.pgjsonb.user: {{ user|default_if_none:"????" }}
+</code></pre>
+    </li>
+    <li>Restart the <code>salt-master</code> service</li>
+    <li>Run a test command like <code>salt '*' test.ping</code></li>
+  </ol>
+{% endblock %}

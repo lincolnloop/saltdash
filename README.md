@@ -1,8 +1,12 @@
+![Salt Dash logo](https://raw.githubusercontent.com/lincolnloop/saltdash/master/client/assets/icon-500x500.png)
+
 # Salt Dash
 
 (aka, A Dash of Salt)
 
 Read-only web interface to read from Salt's [external job cache]() using the  [`pgjsonb`]() returner.
+
+![screenshot](https://cldup.com/8TTHBPfhyu.png)
 
 
 ## Running Locally
@@ -46,3 +50,7 @@ returner.pgjsonb.user: [db-user]
 ```
 
 Restart your `salt-master` and all future jobs should get stored in the database.
+
+## Attributions
+
+Icon by [BornSymbols](https://thenounproject.com/term/salt/705369) used under `CCBY` license.
