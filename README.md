@@ -1,4 +1,4 @@
-![Salt Dash logo](https://raw.githubusercontent.com/lincolnloop/saltdash/master/client/assets/icon-500x500.png)
+![Salt Dash logo](https://cldup.com/pjjyyptW69.png)
 
 # Salt Dash
 
