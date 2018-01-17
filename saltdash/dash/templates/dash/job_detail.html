@@ -11,7 +11,8 @@
     {% include "dash/_job_summary.html" %}
   </div>
 
-  {% for result in result_list %}
+  {% for result in object_list %}
     {% include "dash/_result_card.html" with collapsed="true" %}
   {% endfor %}
+  {% include "dash/_pagination.html" %}
 {% endblock %}

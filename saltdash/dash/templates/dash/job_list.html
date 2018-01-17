@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block container %}
-  {% for job in job_list %}
+  {% for job in object_list %}
     <div class="card mb-4" id="{{ job.jid }}">
       <div class="card-body">
         {% if job.successes > 0 %}
@@ -33,4 +33,5 @@
       {% endif %}
     </div>
   {% endfor %}
+  {% include "dash/_pagination.html" %}
 {% endblock %}
