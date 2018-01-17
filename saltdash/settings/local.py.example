@@ -1,3 +1,15 @@
 from .base import *
 
 DEBUG = True
+
+# Disable auth
+MIDDLEWARE_CLASSES.remove('saltdash.core.middleware.LoginRequiredMiddleware')
+
+# OR Setup auth (comment out line above if using auth)
+# create token https://github.com/settings/tokens
+# curl -H "Authorization: token <token>" https://api.github.com/orgs/<org>/teams
+SOCIAL_AUTH_GITHUB_TEAM_ID = ''
+
+# https://github.com/organizations/<org>/settings/applications
+SOCIAL_AUTH_GITHUB_TEAM_KEY = ''
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = ''

@@ -16,6 +16,7 @@ ipdb = "*"
 "e1839a8" = {path = ".", editable = true}
 django = "*"
 "psycopg2" = "*"
+social-auth-app-django = "*"
 
 
 [requires]
