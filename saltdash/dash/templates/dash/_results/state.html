@@ -3,15 +3,15 @@
   {% for state in result.states %}
     <li data-state-status="{{ state.status }}"
         class="collapse {% if state.status == 'failed' or state.status == 'changed' and not collapsed %}show{% endif %}">
+      <small class="text-muted float-right">{{ state.duration }}ms</small>
       <h5>
-        <a href="#state-{{ result.pk }}-{{ forloop.counter }}"
+        <a href="#state-{{ result.pk }}-{{ state.order }}"
            data-toggle="collapse"
-           class="text-lg-left {% if state.success and not state.changed %}text-muted{% endif %}{% if state.changed %} text-success{% endif %}{% if state.success %} collapsed{% else %} text-danger{% endif %}">
+           class="text-lg-left {% if state.status == 'unchanged' %}text-muted collapsed{% endif %}{% if state.status == 'changed' %} text-success{% endif %}{% if state.status == 'requisite-failed' %} text-warning collapsed{% endif %}{% if state.status == 'failed' %} text-danger{% endif %}">
           {{ state.module }}.{{ state.function }} {{ state.id }}
         </a>
       </h5>
-      <small class="text-muted float-right">{{ state.duration }}ms</small>
-      <div id="state-{{ result.pk }}-{{ forloop.counter }}"
+      <div id="state-{{ result.pk }}-{{ state.order }}"
            class="collapse">
         <div class="row mb-2">
           <div class="col col-md-5">
