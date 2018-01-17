@@ -94,7 +94,7 @@ class Result(models.Model):
         return reverse('dash:return_detail', args=[self.pk])
 
     @cached_property
-    def job(self):
+    def job(self) -> Job:
         try:
             return Job.objects.get(jid=self.jid)
         except Job.DoesNotExist:
@@ -107,11 +107,11 @@ class Result(models.Model):
                              "tgt_type": "list"})
 
     @cached_property
-    def return_val_as_json(self):
+    def return_val_as_json(self) -> str:
         return json.dumps(self.return_val, indent=2)
 
     @property
-    def result_type(self):
+    def result_type(self) -> str:
         if isinstance(self.return_val, dict):
             try:
                 __ = list(self.return_val.values())[0]['__sls__']
@@ -121,30 +121,30 @@ class Result(models.Model):
         return 'text'
 
     @property
-    def is_state(self):
+    def is_state(self) -> bool:
         return self.result_type == 'state'
 
-    def states_with_status(self, status):
+    def states_with_status(self, status: str) -> int:
         return len([s for s in self.states if s['status'] == status])
 
     @cached_property
-    def states_changed(self):
+    def states_changed(self) -> int:
         return self.states_with_status('changed')
 
     @cached_property
-    def states_failed(self):
+    def states_failed(self) -> int:
         return self.states_with_status('failed')
 
     @cached_property
-    def states_failed_requisite(self):
+    def states_failed_requisite(self) -> int:
         return self.states_with_status('requisite-failed')
 
     @cached_property
-    def states_unchanged(self):
+    def states_unchanged(self) -> int:
         return self.states_with_status('unchanged')
 
     @cached_property
-    def states(self):
+    def states(self) -> list:
         if self.result_type != 'state':
             raise TypeError("Return must be for a state")
         sorted_run = sorted(self.return_val.items(),
@@ -152,11 +152,11 @@ class Result(models.Model):
         return [_convert_state(*args) for args in sorted_run]
 
     @cached_property
-    def duration(self):
+    def duration(self) -> float:
         return sum([s['duration'] for s in self.states])
 
 
-def _convert_state(key, data):
+def _convert_state(key: str, data: dict) -> dict:
     """Make state data more usable"""
     mod, id, name, fun = key.split('_|-')
     state = {
