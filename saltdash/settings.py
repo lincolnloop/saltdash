@@ -185,6 +185,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, os.pardir, 'client', 'dist')
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
 
 # Python Social Auth
 AUTHENTICATION_BACKENDS = [

@@ -1,5 +1,6 @@
 .env
 
 node_modules
-client/.cache
-client/dist
+/client/.cache
+/client/dist
+/static
