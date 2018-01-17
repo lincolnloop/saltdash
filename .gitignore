@@ -1,4 +1,4 @@
-/saltdash/settings/local.py
+.env
 
 node_modules
 client/.cache

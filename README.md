@@ -18,7 +18,7 @@ Install [Pipenv](https://docs.pipenv.org/) for the back-end.
 ```bash
 (cd client; yarn)
 pipenv --three install --dev
-cp saltdash/settings/local.py.example saltdash/settings/local.py
+cp .env-example .env && $EDITOR .env
 pipenv shell
 saltdash migrate
 saltdash runserver

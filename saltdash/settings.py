@@ -11,23 +11,27 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from distutils.util import strtobool
+import logging.config
 
+import dj_database_url
 from django.urls import reverse_lazy
+from django.utils.log import DEFAULT_LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'a=9u^+k-0k7gr^do_8up%zjld!ze1ur(7(+r2m%bx&wlnd2ywb'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = strtobool(os.getenv('DEBUG', 'false'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
 
 
 # Application definition
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'raven.contrib.django.raven_compat',
     'social_django',
 
     'saltdash.dash',
@@ -80,12 +85,7 @@ WSGI_APPLICATION = 'saltdash.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'salt',
-    }
-}
+DATABASES = {'default': dj_database_url.config('DATABASE_URL')}
 
 
 # Password validation
@@ -121,6 +121,63 @@ USE_L10N = True
 USE_TZ = True
 
 
+RAVEN_CONFIG = {'dsn': os.getenv('SENTRY_DSN')}
+
+# Disable Django's logging setup
+LOGGING_CONFIG = None
+
+LOGLEVEL = os.getenv('LOGLEVEL', 'info').upper()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(message)s',
+            'class': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+        },
+    },
+    'handlers': {
+        # console logs to stderr
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        # Add Handler for Sentry for `warning` and above
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+    },
+    'loggers': {
+        # default for all undefined Python modules
+        '': {
+            'level': 'WARNING',
+            'handlers': ['console', 'sentry'],
+        },
+        # Our application code
+        'saltdash': {
+            'level': LOGLEVEL,
+            'handlers': ['console', 'sentry'],
+            # Avoid double logging because of root logger
+            'propagate': False,
+        },
+    },
+}
+# Add runserver request logging back in
+for k in ['formatters', 'handlers', 'loggers']:
+    LOGGING[k]['django.server'] = DEFAULT_LOGGING[k]['django.server']
+try:
+    # setup pretty logging for local dev
+    import readable_log_formatter
+    LOGGING['formatters']['default'] = {
+        '()': 'readable_log_formatter.ReadableFormatter'
+    }
+except ImportError:
+    pass
+logging.config.dictConfig(LOGGING)
+log = logging.getLogger(__name__)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
@@ -140,8 +197,23 @@ SOCIAL_AUTH_URL_PREFIX = 'auth'
 LOGIN_EXEMPT_URLS = [f'{SOCIAL_AUTH_URL_PREFIX}/.*']
 LOGIN_URL = reverse_lazy('social:begin', args=['github-team'])
 LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_GITHUB_TEAM_ID = ''
-SOCIAL_AUTH_GITHUB_TEAM_KEY = ''
-SOCIAL_AUTH_GITHUB_TEAM_SECRET = ''
+
+
+# create token https://github.com/settings/tokens
+# curl -H "Authorization: token <token>" \
+#       https://api.github.com/orgs/<org>/teams
+SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ['GITHUB_TEAM_ID']
+
+# https://github.com/organizations/<org>/settings/applications
+SOCIAL_AUTH_GITHUB_TEAM_KEY = os.environ['GITHUB_TEAM_KEY']
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ['GITHUB_TEAM_SECRET']
 # Need to read teams to know if user can login
 SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['read:org']
+
+if (not SOCIAL_AUTH_GITHUB_TEAM_ID or
+        not SOCIAL_AUTH_GITHUB_TEAM_KEY or
+        not SOCIAL_AUTH_GITHUB_TEAM_SECRET):
+    log.warning("GitHub login environment variables not present. "
+                "Turning off login requirement.")
+    # If Github is not setup, don't require login
+    MIDDLEWARE.remove('saltdash.core.middleware.LoginRequiredMiddleware')
