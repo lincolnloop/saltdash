@@ -20,7 +20,6 @@ social-auth-app-django = "*"
 dj-database-url = "*"
 raven = "*"
 python-json-logger = "*"
-"python3-openid" = "*"
 
 
 [requires]

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "53bd7ef7d4925192fea7dbe47bfa5477146f29a196b1d2cdff0e516dd3807d8d"
+            "sha256": "40493b67ce1946185351995e352a5545d4ba3a9cf5dfd839be0f446cfb351a35"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -50,13 +50,6 @@
             ],
             "markers": "python_version < '3.2'",
             "version": "==0.5.5"
-        },
-        "defusedxml": {
-            "hashes": [
-                "sha256:702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20",
-                "sha256:24d7f2f94f7f3cb6061acb215685e5125fbcdc40a857eff9de22518820b0a4f4"
-            ],
-            "version": "==0.5.0"
         },
         "dj-database-url": {
             "hashes": [
@@ -138,20 +131,6 @@
                 "sha256:8205cfe7061715de5cd1b37e3565d5b97d0ac13b30ff3ee612554abb6093d640"
             ],
             "version": "==0.1.8"
-        },
-        "python-openid": {
-            "hashes": [
-                "sha256:92c51c3ecec846cbec4aeff11f9ff47303d4a63f93b0e6ac0ec02a091fed70ef",
-                "sha256:c2d133e47e0a7705c9272eef00d7a09c174f5bf17a127fed8e2c6499556cc782"
-            ],
-            "version": "==2.2.5"
-        },
-        "python3-openid": {
-            "hashes": [
-                "sha256:0086da6b6ef3161cfe50fb1ee5cceaf2cda1700019fda03c2c5c440ca6abe4fa",
-                "sha256:628d365d687e12da12d02c6691170f4451db28d6d68d050007e4a40065868502"
-            ],
-            "version": "==3.1.0"
         },
         "pytz": {
             "hashes": [
@@ -279,7 +258,7 @@
                 "sha256:db3e43032d23787d3e9aec8c7ef1e0d2c3c589d5f303477661ebda2ca6d4bfba",
                 "sha256:d32550b75a818b289bd4c1f96b60c89957811da205afcceab75bc8b4857ea5b3"
             ],
-            "markers": "python_version == '2.7' or python_version == '3.3'",
+            "markers": "python_version in '2.6 2.7 3.2 3.3'",
             "version": "==2.3.0"
         },
         "pexpect": {
