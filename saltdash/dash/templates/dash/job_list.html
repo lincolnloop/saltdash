@@ -22,7 +22,9 @@
         {% if job.failures > 0 %}
           <a href="{% url "dash:job_detail_failed" jid=job.jid  %}" class="float-right badge badge-danger" title="{{ job.failures }} minion{{ job.failures|pluralize }} failed">{{ job.failures }}</a>
         {% endif %}
-
+        {% if job.successes == 0 and job.failures == 0 %}
+          <a href="{% url "dash:job_detail" jid=job.jid  %}" class="float-right badge badge-light" title="pending">&hellip;</a>
+        {% endif %}
         {% include "dash/_job_summary.html" %}
         <a href="{% url "dash:job_detail" jid=job.jid  %}" class="card-link">Results &rarr;</a>
       </div>

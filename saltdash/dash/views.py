@@ -72,8 +72,6 @@ def job_detail(request, jid, success=None):
     if count == 1:
         return HttpResponseRedirect(
             reverse('dash:result_detail', kwargs={'pk': qs[0].pk}))
-    if count == 0:
-        raise Http404
     context = {
         'job': job,
         'result_list': qs,
