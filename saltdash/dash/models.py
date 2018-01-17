@@ -147,7 +147,9 @@ class Result(models.Model):
     def states(self):
         if self.result_type != 'state':
             raise TypeError("Return must be for a state")
-        return [_convert_state(*args) for args in self.return_val.items()]
+        sorted_run = sorted(self.return_val.items(),
+                            key=lambda s: s[1]['__run_num__'])
+        return [_convert_state(*args) for args in sorted_run]
 
     @cached_property
     def duration(self):
@@ -169,6 +171,7 @@ def _convert_state(key, data):
         'duration': data.get('duration', 0),
         'start_time': data.get('start_time'),
         'comment': data.get('comment', ''),
+        'order': data['__run_num__'],
     }
     if not state['success']:
         if state['comment'].startswith('One or more requisite failed:'):
