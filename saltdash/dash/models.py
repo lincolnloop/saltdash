@@ -137,7 +137,7 @@ class Result(models.Model):
 
     @cached_property
     def states_failed_requisite(self):
-        return self.states_with_status('failed-requisite')
+        return self.states_with_status('requisite-failed')
 
     @cached_property
     def states_unchanged(self):
