@@ -1,15 +1,29 @@
 {% extends "dash/base.html" %}
-{% block title %}Jobs{% endblock %}
+{% load dash_tags %}
+
+{% block title %}Results{% endblock %}
 {% block nav-results-active %}active{% endblock %}
 {% block breadcrumbs %}
-  <span class="breadcrumb-item active">Results</span>
+  <a class="breadcrumb-item active" href="{% url "dash:result_list" %}">Results</a>
+  {% if "minion" in filters %}
+    <span class="breadcrumb-item">{{ filters.minion }}</span>
+  {% endif %}
+
 {% endblock %}
 {% block extra-nav %}
   {% if has_system_jobs %}
-    <a class="btn btn-sm btn-outline-light" href="{% url "dash:result_list" %}">Hide system jobs</a>
+    <a class="btn btn-sm btn-outline-light mr-2" href="{% url "dash:result_list" %}">Hide system jobs</a>
   {% else %}
-    <a class="btn btn-sm btn-outline-light" href="{% url "dash:result_list" %}?system">Show system jobs</a>
+    <a class="btn btn-sm btn-outline-light mr-2" href="{% url "dash:result_list" %}?system">Show system jobs</a>
   {% endif %}
+  <form class="form-inline mt-1 mb-1" method="get">
+    <div class="input-group input-group-sm">
+      <input id="minion-filter" class="form-control" name="minion" list="minions" placeholder="Filter by minion" aria-label="Filter by minion">
+      <div class="input-group-append">
+        <button class="btn btn-outline-light" type="submit">Filter</button>
+      </div>
+    </div>
+  </form>
 {% endblock %}
 
 {% block container %}
@@ -17,4 +31,10 @@
     {% include "dash/_result_card.html" with collapsed="true" show_job="true" %}
   {% endfor %}
   {% include "dash/_pagination.html" %}
+  {% get_minions as minions %}
+  <datalist id="minions">
+    {% for minion in minions %}
+      <option value="{{ minion }}">
+    {% endfor %}
+  </datalist>
 {% endblock %}

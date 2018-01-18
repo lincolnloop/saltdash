@@ -2,8 +2,15 @@ import './jquery-global';
 import 'bootstrap';
 
 
-class toggleState {
+class App {
   constructor($) {
+    this.$ = $;
+    this.toggleButtonState();
+    this.navigateOnFilter();
+  }
+
+  toggleButtonState() {
+    const $ = this.$;
     $('a[data-button-toggle-class]').on('click', function() {
       const $this = $(this);
       const klass = $(this).data('button-toggle-class');
@@ -15,9 +22,23 @@ class toggleState {
       } else {
         $this.removeClass(shownClass).addClass(hiddenClass).blur();
       }
-    })
+    });
+  }
+
+  navigateOnFilter() {
+    const $ = this.$;
+    $('#minion-filter').on('input', function() {
+      const val = this.value;
+      const datalist = document.getElementById(this.getAttribute('list'));
+      const inDatalist = $(datalist).find('option').filter(function() {
+        return this.value.toLowerCase() === val.toLowerCase();
+      }).length;
+      if (inDatalist) {
+        $(this).parents('form').submit();
+      }
+    });
   }
 }
 
-new toggleState(window.jQuery)
+new App(window.jQuery);
 

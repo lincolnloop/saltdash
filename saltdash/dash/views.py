@@ -89,11 +89,16 @@ def job_result_for_minion(request, jid,minion):
 def result_list(request):
     template = "dash/result_list.html"
     qs = Result.objects.all()
+    filters = {}
     show_system = 'system' in request.GET
     if not show_system:
         qs = qs.exclude(fun='saltutil.find_job')
+    if 'minion' in request.GET:
+        filters['minion'] = request.GET['minion']
+    qs = qs.filter(**filters)
     context = {
         'result_list': qs,
+        'filters': filters,
         'has_system_jobs': show_system,
     }
     context.update(paginate_queryset(qs, request))
