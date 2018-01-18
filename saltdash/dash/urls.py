@@ -20,8 +20,7 @@ urlpatterns = [
          {'success': False},
          name="job_detail_failed"),
     path('job/<int:jid>/<str:minion>/',
-         views.job_result_for_minion,
-         name="job_result_for_minion"),
+         views.result_detail,
+         name="result_detail"),
     path('result/', views.result_list, name="result_list"),
-    path('result/<int:pk>/', views.result_detail, name="result_detail"),
 ]

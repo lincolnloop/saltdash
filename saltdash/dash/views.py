@@ -71,19 +71,14 @@ def job_detail(request, jid, success=None):
     count = qs.count()
     if count == 1:
         return HttpResponseRedirect(
-            reverse('dash:result_detail', kwargs={'pk': qs[0].pk}))
+            reverse('dash:result_detail', kwargs={'jid': qs[0].jid,
+                                                  'minion': qs[0].minion}))
     context = {
         'job': job,
         'result_list': qs,
     }
     context.update(paginate_queryset(qs, request))
     return render(request, template, context)
-
-
-def job_result_for_minion(request, jid,minion):
-    template = "dash/job_detail.html"
-    result = get_object_or_404(Result, jid=jid, id=minion)
-    return HttpResponsePermanentRedirect(result.get_absolute_url())
 
 
 def result_list(request):
@@ -105,11 +100,11 @@ def result_list(request):
     return render(request, template, context)
 
 
-def result_detail(request, pk):
+def result_detail(request, jid, minion):
     template = "dash/result_detail.html"
-    ret = get_object_or_404(Result, pk=pk)
+    result = get_object_or_404(Result, jid=jid, minion=minion)
     context = {
-        'job': ret.job,
-        'result': ret,
+        'job': result.job,
+        'result': result,
     }
     return render(request, template, context)

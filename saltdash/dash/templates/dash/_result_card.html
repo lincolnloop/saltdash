@@ -1,6 +1,6 @@
 <div class="card mb-4" id="{{ result.pk }}">
   <div class="card-body">
-    <a href="{% url "dash:result_detail" pk=result.pk  %}"
+    <a href="{% url "dash:result_detail" jid=result.jid minion=result.minion  %}"
        class="float-right ml-1 badge badge-{% if result.success %}success{% else %}danger{% endif %}">
       {% if result.success %}√{% else %}x{% endif %}
     </a>
@@ -9,7 +9,7 @@
     {% endif %}
 
     <h5 class="card-title">
-      <code><a href="{% url "dash:result_detail" pk=result.pk  %}">
+      <code><a href="{% url "dash:result_detail" jid=result.jid minion=result.minion  %}">
         {{ result.minion }}
       </a></code>
     </h5>
