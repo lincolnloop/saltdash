@@ -62,12 +62,12 @@
       {# not state output, just text/json #}
       {% if collapsed %}
       <a href="#result-{{ result.pk }}"
-         data-toggle="collapse-optimized"
+         data-toggle="collapse"
          class="text-muted{% if result.success %} collapsed{% endif %}">Show/hide results</a>
       {% endif %}
       {% if result.return_val %}
         <div id="result-{{ result.pk }}"
-             class="collapse-optimized {% if not collapsed or not result.success %}show{% endif %}">
+             class="collapse {% if not collapsed or not result.success %}show{% endif %}">
           {% include "dash/_results/"|add:result.result_type|add:".html" with result=result %}
         </div>
       {% endif %}
