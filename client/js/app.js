@@ -5,38 +5,36 @@ import 'bootstrap';
 class App {
   constructor($) {
     this.$ = $;
-    this.toggleButtonState();
-    this.navigateOnFilter();
+    this.$('a[data-toggle="collapse-optimized"]').on('click', this.toggleResultState.bind(this));
+    this.$('#minion-filter').on('input', this.navigateOnFilter.bind(this));
+  }
+  
+  toggleResultState(evt) {
+    const $this = this.$(evt.currentTarget);
+    const klass = $this.data('button-toggle-class');
+    const shownClass = `btn-${klass}`;
+    const hiddenClass = `btn-outline-${klass}`;
+    // blur removes an ugly boostrap halo on :focus
+    if ($this.hasClass(hiddenClass)) {
+      $this.removeClass(hiddenClass).addClass(shownClass);
+      this.$($this.data('target')).addClass(`state-${$this.data('target-status')}`);
+    } else {
+      $this.removeClass(shownClass).addClass(hiddenClass);
+      this.$($this.data('target')).removeClass(`state-${$this.data('target-status')}`);
+    }
+    evt.preventDefault();
   }
 
-  toggleButtonState() {
-    const $ = this.$;
-    $('a[data-button-toggle-class]').on('click', function() {
-      const $this = $(this);
-      const klass = $(this).data('button-toggle-class');
-      const shownClass = `btn-${klass}`;
-      const hiddenClass = `btn-outline-${klass}`;
-      // blur removes an ugly boostrap halo on :focus
-      if ($this.hasClass(hiddenClass)) {
-        $this.removeClass(hiddenClass).addClass(shownClass).blur();
-      } else {
-        $this.removeClass(shownClass).addClass(hiddenClass).blur();
-      }
-    });
-  }
-
-  navigateOnFilter() {
-    const $ = this.$;
-    $('#minion-filter').on('input', function() {
-      const val = this.value;
-      const datalist = document.getElementById(this.getAttribute('list'));
-      const inDatalist = $(datalist).find('option').filter(function() {
-        return this.value.toLowerCase() === val.toLowerCase();
-      }).length;
-      if (inDatalist) {
-        $(this).parents('form').submit();
-      }
-    });
+  navigateOnFilter(evt) {
+    const val = this.value;
+    const datalist = document.getElementById(this.getAttribute('list'));
+    const inDatalist = this.$(datalist).find('option').filter(function() {
+      return this.value.toLowerCase() === val.toLowerCase();
+    }).length;
+    if (inDatalist) {
+      this.$(evt.currentTarget).parents('form').submit();
+    }
+    evt.preventDefault();
   }
 }
 

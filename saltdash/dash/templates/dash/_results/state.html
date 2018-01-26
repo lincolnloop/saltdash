@@ -2,7 +2,7 @@
 <ul class="list-unstyled mt-2">
   {% for state in result.states %}
     <li data-state-status="{{ state.status }}"
-        class="collapse {% if state.status == 'failed' or state.status == 'changed' and not collapsed %}show{% endif %}">
+        class="collapse">
       <small class="text-muted float-right">{{ state.duration }}ms</small>
       <h5>
         <a href="#state-{{ result.pk }}-{{ state.order }}"

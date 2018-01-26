@@ -1,1 +1,24 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+.state-list-container {
+  &.state-failed {
+    [data-state-status="failed"] {
+      display: block;
+    }
+  }
+  &.state-unchanged {
+    [data-state-status="unchanged"] {
+      display: block;
+    }
+  }
+  &.state-changed {
+    [data-state-status="changed"] {
+      display: block;
+    }
+  }
+  &.state-requisite-failed {
+    [data-state-status="requisite-failed"] {
+      display: block;
+    }
+  }
+}

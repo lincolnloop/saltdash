@@ -20,37 +20,41 @@
     {% if result.is_state %}
       {% if result.states_failed > 0 %}
         <a href="#"
-           data-toggle="collapse"
+           data-toggle="collapse-optimized"
            data-button-toggle-class="danger"
-           data-target='div#result-{{ result.pk }} [data-state-status="failed"]'
+           data-target='div#result-{{ result.pk }}'
+           data-target-status='failed'
            class="btn btn-sm btn-danger">{{ result.states_failed }} failed</a>
       {% endif %}
 
       {% if result.states_failed_requisite > 0 %}
         <a href="#"
-           data-toggle="collapse"
+           data-toggle="collapse-optimized"
            data-button-toggle-class="warning"
-           data-target='div#result-{{ result.pk }} [data-state-status="requisite-failed"]'
+           data-target='div#result-{{ result.pk }}'
+           data-target-status="requisite-failed"
            class="btn btn-sm btn-outline-warning">{{ result.states_failed_requisite }} failed req</a>
       {% endif %}
 
       {% if result.states_changed > 0 %}
         <a href="#"
-           data-toggle="collapse"
+           data-toggle="collapse-optimized"
            data-button-toggle-class="success"
-           data-target='div#result-{{ result.pk }} [data-state-status="changed"]'
+           data-target='div#result-{{ result.pk }}'
+           data-target-status="changed"
            class="btn btn-sm btn{% if collapsed %}-outline{% endif %}-success">{{ result.states_changed }} changed</a>
       {% endif %}
 
       {% if result.states_unchanged > 0 %}
         <a href="#"
-           data-toggle="collapse"
+           data-toggle="collapse-optimized"
            data-button-toggle-class="secondary"
-           data-target='div#result-{{ result.pk }} [data-state-status="unchanged"]'
+           data-target='div#result-{{ result.pk }}'
+           data-target-status='unchanged'
            class="btn btn-sm btn-outline-secondary">{{ result.states_unchanged }} unchanged</a>
       {% endif %}
 
-      <div id="result-{{ result.pk }}">
+      <div id="result-{{ result.pk }}" class="state-list-container state-failed">
         {% include "dash/_results/"|add:result.result_type|add:".html" with result=result %}
       </div>
     {% else %}
@@ -58,12 +62,12 @@
       {# not state output, just text/json #}
       {% if collapsed %}
       <a href="#result-{{ result.pk }}"
-         data-toggle="collapse"
-         class="text-muted{% if result.success %}  collapsed{% endif %}">Show/hide results</a>
+         data-toggle="collapse-optimized"
+         class="text-muted{% if result.success %} collapsed{% endif %}">Show/hide results</a>
       {% endif %}
       {% if result.return_val %}
         <div id="result-{{ result.pk }}"
-             class="collapse {% if not collapsed or not result.success %}show{% endif %}">
+             class="collapse-optimized {% if not collapsed or not result.success %}show{% endif %}">
           {% include "dash/_results/"|add:result.result_type|add:".html" with result=result %}
         </div>
       {% endif %}
