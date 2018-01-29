@@ -181,7 +181,7 @@ log = logging.getLogger(__name__)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/dist/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, os.pardir, 'client', 'dist')
 ]
@@ -203,11 +203,11 @@ LOGIN_REDIRECT_URL = '/'
 # create token https://github.com/settings/tokens
 # curl -H "Authorization: token <token>" \
 #       https://api.github.com/orgs/<org>/teams
-SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ['GITHUB_TEAM_ID']
+SOCIAL_AUTH_GITHUB_TEAM_ID = os.getenv('GITHUB_TEAM_ID')
 
 # https://github.com/organizations/<org>/settings/applications
-SOCIAL_AUTH_GITHUB_TEAM_KEY = os.environ['GITHUB_TEAM_KEY']
-SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ['GITHUB_TEAM_SECRET']
+SOCIAL_AUTH_GITHUB_TEAM_KEY = os.getenv('GITHUB_CLIENT_ID')
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.getenv('GITHUB_CLIENT_SECRET')
 # Need to read teams to know if user can login
 SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['read:org']
 

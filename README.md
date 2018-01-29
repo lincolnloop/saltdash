@@ -2,9 +2,7 @@
 
 # Salt Dash
 
-(aka, A Dash of Salt)
-
-Read-only web interface to read from Salt's [external job cache]() using the  [`pgjsonb`]() returner.
+Read-only web interface to read from Salt's [external job cache](https://docs.saltstack.com/en/latest/topics/jobs/external_cache.html) using the  [`pgjsonb`](https://docs.saltstack.com/en/latest/ref/returners/all/salt.returners.pgjsonb.html) returner.
 
 ![screenshot](https://cldup.com/8TTHBPfhyu.png)
 
@@ -18,7 +16,7 @@ Install [Pipenv](https://docs.pipenv.org/) for the back-end.
 ```bash
 (cd client; yarn)
 pipenv --three install --dev
-cp .env-example .env && $EDITOR .env
+$EDITOR .env  # if necessary
 pipenv shell
 saltdash migrate
 saltdash runserver
@@ -30,10 +28,40 @@ Currently using [parcel](https://parceljs.org/). To start a development environm
 
 ```bash
 cd client
-npm run watch:css
-# in another shell
-npm run watch:js
+yarn run watch
 ```
+
+## Running in Production
+
+`saltdash runserver` is not suitable for production. We recommend using `uWSGI` in production, but any production-level WSGI server (`gunicorn`, `waitress`, etc.) should work fine. A sample `uwsgi.ini` is provided in the repo. If Docker is more your speed, there's a `Dockerfile` as well.
+
+Your environment should include the following variables:
+
+### Required
+
+* `DEBUG`: `False` (always in production)
+* `ALLOWED_HOSTS`: a comma-separated list of hosts allowed to serve the site ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts))
+* `SECRET_KEY`: a long random string you keep secret ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key))
+* `DATABASE_URL`: `postgres://USER:PASSWORD@HOST:PORT/NAME`
+
+
+### Optional
+
+* `GITHUB_TEAM_ID`: ID from the list provided by the `curl` command below
+* `GITHUB_CLIENT_ID`: OAuth Client ID
+* `GITHUB_CLIENT_SECRET`: OAuth Client Secret
+* `SENTRY_DSN`: For error reporting to [Sentry](https://sentry.io)
+
+GitHub Team authentication is included by setting the relevant `GITHUB_*` variables.
+
+You'll need to setup an OAuth App at https://github.com/organizations/<org>/settings/applications
+
+To retrieve your team IDs:
+
+1. Create [a token at GitHub](https://github.com/settings/tokens)
+2. `curl -H "Authorization: token <token>" https://api.github.com/orgs/<org>/teams`
+
+
 
 ## Setting up Salt
 

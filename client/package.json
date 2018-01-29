@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "scripts": {
     "postinstall": "npm run build",
     "build": "npm run build:css && npm run build:js && npm run build:assets",
@@ -6,17 +7,19 @@
     "build:js": "parcel build js/app.js",
     "build:assets": "rsync -av --delete ./assets ./dist/",
     "clean": "rm -rf ./dist ./.cache",
-    "watch:css": "parcel scss/app.scss",
-    "watch:js": "parcel js/app.js"
+    "watch": "npm-run-all --parallel watch:**",
+    "watch:css": "parcel --public-url=/static/ scss/app.scss",
+    "watch:js": "parcel --public-url=/static/ js/app.js"
   },
   "dependencies": {
-    "bootstrap": "4.0.0-beta.3",
+    "bootstrap": "^4.0.0",
     "jquery": "^3.2.1",
     "node-sass": "^4.7.2",
-    "parcel-bundler": "^1.4.1",
+    "parcel-bundler": "^1.5.0",
     "popper.js": "^1.12.9"
   },
   "devDependencies": {
-    "eslint": "^4.15.0"
+    "eslint": "^4.15.0",
+    "npm-run-all": "^4.1.2"
   }
 }

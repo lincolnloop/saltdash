@@ -1,0 +1,12 @@
+/client/node_modules
+/client/.cache
+/client/dist
+/db.sqlite3
+*.egg-info
+/.venv
+/.env
+/.docker-env
+Dockerfile
+.git
+.DS_Store
+.idea
