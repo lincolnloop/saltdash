@@ -54,7 +54,7 @@ Your environment should include the following variables:
 
 GitHub Team authentication is included by setting the relevant `GITHUB_*` variables.
 
-You'll need to setup an OAuth App at https://github.com/organizations/<org>/settings/applications
+You'll need to setup an OAuth App at https://github.com/organizations/<org>/settings/applications with a callback URL in the form: `https://your-site.example.com/auth/complete/github-team/`
 
 To retrieve your team IDs:
 
