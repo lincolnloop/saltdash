@@ -8,11 +8,11 @@
       <small class="text-muted float-right">{{ result.duration|floatformat:2 }}ms</small>
     {% endif %}
 
-    <h5 class="card-title">
+    <h4 class="card-title">
       <code><a href="{% url "dash:result_detail" jid=result.jid minion=result.minion  %}">
         {{ result.minion }}
       </a></code>
-    </h5>
+    </h4>
     {% if show_job %}
     {% include "dash/_job_summary.html" with job=result.job %}
   {% endif %}

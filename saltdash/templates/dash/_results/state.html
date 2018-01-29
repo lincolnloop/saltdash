@@ -4,12 +4,14 @@
     <li data-state-status="{{ state.status }}"
         class="collapse">
       <small class="text-muted float-right">{{ state.duration }}ms</small>
-      <h5>
+      <h5 class="font-weight-regular">
+        <code>
         <a href="#state-{{ result.pk }}-{{ state.order }}"
            data-toggle="collapse"
            class="text-lg-left {% if state.status == 'unchanged' %}text-muted collapsed{% endif %}{% if state.status == 'changed' %} text-success{% endif %}{% if state.status == 'requisite-failed' %} text-warning collapsed{% endif %}{% if state.status == 'failed' %} text-danger{% endif %}">
           {{ state.module }}.{{ state.function }} {{ state.id }}
         </a>
+      </code>
       </h5>
       <div id="state-{{ result.pk }}-{{ state.order }}"
            class="collapse">
