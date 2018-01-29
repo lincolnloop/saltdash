@@ -79,6 +79,14 @@ returner.pgjsonb.user: [db-user]
 
 Restart your `salt-master` and all future jobs should get stored in the database.
 
+If you have *lots* of jobs, you'll probably want to purge the cache periodically. A helper command is provided to do just that, run:
+
+```bash
+saltdash purge_job_cache [days_older_than_to_purge]
+```
+
+If you want to automate this, use the `--no-input` flag to bypass the confirmation prompt.
+
 ## Attributions
 
 Icon by [BornSymbols](https://thenounproject.com/term/salt/705369) used under `CCBY` license.
