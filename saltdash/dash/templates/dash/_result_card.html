@@ -54,7 +54,7 @@
            class="btn btn-sm btn-outline-secondary">{{ result.states_unchanged }} unchanged</a>
       {% endif %}
 
-      <div id="result-{{ result.pk }}" class="state-list-container state-failed">
+      <div id="result-{{ result.pk }}" class="state-list-container state-failed{% if not collapsed %} state-changed{% endif %}">
         {% include "dash/_results/"|add:result.result_type|add:".html" with result=result %}
       </div>
     {% else %}
