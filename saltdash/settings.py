@@ -195,7 +195,7 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_URL_PREFIX = 'auth'
 # Bypass LoginRequiredMiddleware for social auth login and callback
-LOGIN_EXEMPT_URLS = [f'{SOCIAL_AUTH_URL_PREFIX}/.*']
+LOGIN_EXEMPT_URLS = ['{}/.*'.format(SOCIAL_AUTH_URL_PREFIX)]
 LOGIN_URL = reverse_lazy('social:begin', args=['github-team'])
 LOGIN_REDIRECT_URL = '/'
 

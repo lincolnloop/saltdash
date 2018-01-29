@@ -57,14 +57,14 @@ class Job(models.Model):
         fun = self.load['fun']
         if self.load['tgt_type'] == 'list':
             if self.target_count > 10:
-                targets = f'{self.target_count} targets'
+                targets = '{} targets'.format(self.target_count)
             else:
                 targets = ', '.join(self.load['tgt'])
         else:
             targets = self.load['tgt']
-        val = f"{self.jid}: salt '{targets}' {fun}"
+        val = "{}: salt '{}' {}".format(self.jid, targets, fun)
         if self.user:
-            val += f" by {self.user}"
+            val += " by {}".format(self.user)
         return val
 
 
@@ -88,7 +88,7 @@ class Result(models.Model):
         ordering = ['-completed']
 
     def __str__(self):
-        return f'{self.jid}: {self.fun} on {self.minion}'
+        return '{}: {} on {}'.format(self.jid, self.fun, self.minion)
 
     def get_absolute_url(self):
         return reverse('dash:return_detail', args=[self.pk])

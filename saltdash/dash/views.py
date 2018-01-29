@@ -32,7 +32,8 @@ def paginate_queryset(queryset: QuerySet, request: HttpRequest) -> dict:
             'is_paginated': page.has_other_pages(),
         }
     except InvalidPage as e:
-        raise Http404(f'Invalid page ({page_number}): {str(e)}')
+        raise Http404('Invalid page ({page_number}): {exp}'.format(
+            page_number=page_number, exp=str(e)))
 
 
 def get_started(request):
