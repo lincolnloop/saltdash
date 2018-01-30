@@ -2,7 +2,7 @@
   <code>{{ job.load.fun }}</code>
   {% if job.user %}<small class="text-muted">by {{ job.user }}</small>{% endif %}
 </h3>
-<h6>Targets: <small class="text-muted">{% if job.load.tgt_type == 'list' %}{{ job.load.tgt|join:", " }}{% else %}{{ job.load.tgt }}{% endif %}</small> </h6>
+<h6>Targets: <small class="text-muted">{{ job.targets|join:", " }}</small> </h6>
 
 
 <h6>Args: {% if not job.load.arg %}<span class="text-muted">[]</span>{% endif %}</h6>

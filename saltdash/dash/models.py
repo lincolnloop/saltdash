@@ -15,10 +15,6 @@ class Job(models.Model):
         ordering = ['-jid']
 
     @cached_property
-    def target_count(self):
-        return len(self.load['tgt'])
-
-    @cached_property
     def user(self):
         return self.load.get('user', None)
 
@@ -53,15 +49,20 @@ class Job(models.Model):
         except IndexError:
             return None
 
-    def __str__(self):
+    @property
+    def targets(self) -> list:
+        tgt = self.load['tgt']
+        if self.load['tgt_type'] == 'list' and not isinstance(tgt, str):
+            return tgt
+        return [tgt]
+
+    def __str__(self) -> str:
         fun = self.load['fun']
-        if self.load['tgt_type'] == 'list':
-            if self.target_count > 10:
-                targets = '{} targets'.format(self.target_count)
-            else:
-                targets = ', '.join(self.load['tgt'])
+        target_count = len(self.targets)
+        if target_count > 10:
+            targets = '{} targets'.format(target_count)
         else:
-            targets = self.load['tgt']
+            targets = ', '.join(self.targets)
         val = "{}: salt '{}' {}".format(self.jid, targets, fun)
         if self.user:
             val += " by {}".format(self.user)
