@@ -3,7 +3,7 @@
   {% for state in result.states %}
     <li data-state-status="{{ state.status }}"
         class="collapse">
-      <small class="text-muted float-right">{{ state.duration }}ms</small>
+      <small><code class="float-right text-muted">{{ state.duration|pretty_time }}</code></small>
       <h5 class="font-weight-regular">
         <code>
         <a href="#state-{{ result.pk }}-{{ state.order }}"
