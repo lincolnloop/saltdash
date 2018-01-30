@@ -186,6 +186,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, os.pardir, 'client', 'dist')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Python Social Auth
 AUTHENTICATION_BACKENDS = [
