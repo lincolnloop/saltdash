@@ -26,13 +26,14 @@ class App {
   }
 
   navigateOnFilter(evt) {
-    const val = this.value;
-    const datalist = document.getElementById(this.getAttribute('list'));
+    const el = evt.currentTarget;
+    const val = el.value;
+    const datalist = document.getElementById(el.getAttribute('list'));
     const inDatalist = this.$(datalist).find('option').filter(function() {
       return this.value.toLowerCase() === val.toLowerCase();
     }).length;
     if (inDatalist) {
-      this.$(evt.currentTarget).parents('form').submit();
+      this.$(el).parents('form').submit();
     }
     evt.preventDefault();
   }
