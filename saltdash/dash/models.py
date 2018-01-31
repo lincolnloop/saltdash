@@ -2,6 +2,7 @@ import json
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.functional import cached_property
 
@@ -71,10 +72,12 @@ class Job(models.Model):
 
 class ResultQuerySet(models.QuerySet):
     def successes(self):
-        return self.filter(full_ret__retcode=0)
+        return self.filter(Q(full_ret__contains={'retcode': 0}) |
+                           Q(return_val__contains={'success': True}))
 
     def failures(self):
-        return self.exclude(full_ret__retcode=0)
+        return self.exclude(Q(full_ret__contains={'retcode': 0}) |
+                            Q(return_val__contains={'success': True}))
 
 
 class Result(models.Model):
@@ -106,7 +109,13 @@ class Result(models.Model):
 
     @property
     def was_success(self):
-        return self.full_ret.get('retcode', -1) == 0
+        if 'retcode' in self.full_ret:
+            return self.full_ret['retcode'] == 0
+        # Master results don't use retcode
+        try:
+            return self.return_val.get('success', False)
+        except AttributeError:
+            return False
 
     @cached_property
     def job(self) -> Job:
