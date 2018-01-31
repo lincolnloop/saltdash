@@ -102,7 +102,7 @@ class Result(models.Model):
         return '{}: {} on {}'.format(self.jid, self.fun, self.minion)
 
     def get_absolute_url(self):
-        return reverse('dash:return_detail', args=[self.pk])
+        return reverse('dash:result_detail', args=[self.jid, self.minion])
 
     @property
     def was_success(self):
