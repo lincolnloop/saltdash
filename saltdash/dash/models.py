@@ -36,11 +36,11 @@ class Job(models.Model):
 
     @cached_property
     def successes(self):
-        return self.saltreturn_set.filter(success=True).count()
+        return self.saltreturn_set.successes().count()
 
     @cached_property
     def failures(self):
-        return self.saltreturn_set.filter(success=False).count()
+        return self.saltreturn_set.failures().count()
 
     @cached_property
     def completed(self):
@@ -69,6 +69,14 @@ class Job(models.Model):
         return val
 
 
+class ResultQuerySet(models.QuerySet):
+    def successes(self):
+        return self.filter(full_ret__retcode=0)
+
+    def failures(self):
+        return self.exclude(full_ret__retcode=0)
+
+
 class Result(models.Model):
     auto_id = models.AutoField(primary_key=True)
     minion = models.CharField(max_length=100, db_index=True, db_column='id')
@@ -84,6 +92,8 @@ class Result(models.Model):
     return_val = JSONField("result", db_column='return')
     success = models.BooleanField()
 
+    objects = ResultQuerySet.as_manager()
+
     class Meta:
         db_table = 'salt_returns'
         ordering = ['-completed']
@@ -96,7 +106,7 @@ class Result(models.Model):
 
     @property
     def was_success(self):
-        return self.success or self.return_val.get('success', False)
+        return self.full_ret.get('retcode', -1) == 0
 
     @cached_property
     def job(self) -> Job:
