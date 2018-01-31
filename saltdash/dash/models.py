@@ -94,6 +94,10 @@ class Result(models.Model):
     def get_absolute_url(self):
         return reverse('dash:return_detail', args=[self.pk])
 
+    @property
+    def was_success(self):
+        return self.success or self.return_val.get('success', False)
+
     @cached_property
     def job(self) -> Job:
         try:

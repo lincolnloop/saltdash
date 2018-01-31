@@ -2,8 +2,8 @@
 <div class="card mb-4" id="{{ result.pk }}">
   <div class="card-body">
     <a href="{% url "dash:result_detail" jid=result.jid minion=result.minion  %}"
-       class="float-right ml-1 badge badge-{% if result.success %}success{% else %}danger{% endif %}">
-      {% if result.success %}√{% else %}x{% endif %}
+       class="float-right ml-1 badge badge-{% if result.was_success %}success{% else %}danger{% endif %}">
+      {% if result.was_success %}√{% else %}x{% endif %}
     </a>
     {% if result.is_state %}
       <code class="float-right small text-muted">{{ result.duration|pretty_time }}</code>
@@ -64,11 +64,11 @@
       {% if collapsed %}
       <a href="#result-{{ result.pk }}"
          data-toggle="collapse"
-         class="text-muted{% if result.success %} collapsed{% endif %}">Show/hide results</a>
+         class="text-muted{% if result.was_success %} collapsed{% endif %}">Show/hide results</a>
       {% endif %}
       {% if result.return_val %}
         <div id="result-{{ result.pk }}"
-             class="collapse {% if not collapsed or not result.success %}show{% endif %}">
+             class="collapse {% if not collapsed or not result.was_success %}show{% endif %}">
           {% include "dash/_results/"|add:result.result_type|add:".html" with result=result %}
         </div>
       {% endif %}
