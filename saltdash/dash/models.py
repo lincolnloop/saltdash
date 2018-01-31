@@ -137,16 +137,18 @@ class Result(models.Model):
     @property
     def result_type(self) -> str:
         if isinstance(self.return_val, dict):
+            if self.return_val.get('fun') == 'runner.state.orchestrate':
+                return 'orchestrate'
             try:
-                __ = list(self.return_val.values())[0]['__sls__']
+                list(self.return_val.values())[0]['__sls__']
                 return 'state'
             except (TypeError, IndexError, KeyError):
                 return 'json'
         return 'text'
 
     @property
-    def is_state(self) -> bool:
-        return self.result_type == 'state'
+    def has_states(self) -> bool:
+        return self.result_type in ['state', 'orchestrate']
 
     def states_with_status(self, status: str) -> int:
         return len([s for s in self.states if s['status'] == status])
@@ -169,9 +171,13 @@ class Result(models.Model):
 
     @cached_property
     def states(self) -> list:
-        if self.result_type != 'state':
+        if self.result_type == 'state':
+            state_dict = self.return_val
+        elif self.result_type == 'orchestrate':
+            state_dict = list(self.return_val['return']['data'].values())[0]
+        else:
             raise TypeError("Return must be for a state")
-        sorted_run = sorted(self.return_val.items(),
+        sorted_run = sorted(state_dict.items(),
                             key=lambda s: s[1]['__run_num__'])
         return [_convert_state(*args) for args in sorted_run]
 

@@ -5,7 +5,7 @@
        class="float-right ml-1 badge badge-{% if result.was_success %}success{% else %}danger{% endif %}">
       {% if result.was_success %}√{% else %}x{% endif %}
     </a>
-    {% if result.is_state %}
+    {% if result.has_states %}
       <code class="float-right small text-muted">{{ result.duration|pretty_time }}</code>
     {% endif %}
 
@@ -18,7 +18,7 @@
     {% include "dash/_job_summary.html" with job=result.job %}
   {% endif %}
 
-    {% if result.is_state %}
+    {% if result.has_states %}
       {% if result.states_failed > 0 %}
         <a href="#"
            data-toggle="collapse-optimized"
