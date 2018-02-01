@@ -1,1 +1,17 @@
-{% extends "dash/_results/state.html" %}
+{% load dash_tags %}
+<ul class="list-unstyled mt-2">
+  {% for state in result.states %}
+    <li data-state-status="{{ state.status }}"
+        class="collapse">
+      <small><code class="float-right text-muted">{{ state.duration|pretty_time }}</code></small>
+      <h5 class="font-weight-regular">
+        <code>
+        {% if state.jid %}<a href="{% url "dash:job_detail" jid=state.jid %}"{% else %}<span{% endif %}
+           class="text-lg-left {% if state.status == 'unchanged' %}text-muted collapsed{% endif %}{% if state.status == 'changed' %} text-success{% endif %}{% if state.status == 'requisite-failed' %} text-warning collapsed{% endif %}{% if state.status == 'failed' %} text-danger{% endif %}">
+          {{ state.module }}.{{ state.function }} {{ state.id }}
+        {% if state.jid %}</a>{% else %}</span>{% endif %}
+      </code>
+      </h5>
+    </li>
+  {% endfor %}
+</ul>

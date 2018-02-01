@@ -202,6 +202,7 @@ def _convert_state(key: str, data: dict) -> dict:
         'start_time': data.get('start_time'),
         'comment': data.get('comment', ''),
         'order': data['__run_num__'],
+        'jid': data.get('__jid__')
     }
     if not state['success']:
         if state['comment'].startswith('One or more requisite failed:'):
