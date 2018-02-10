@@ -128,12 +128,20 @@ LOGGING_CONFIG = None
 
 LOGLEVEL = os.getenv('LOGLEVEL', 'info').upper()
 
+
+def _log_format():
+    keys = ['asctime', 'created', 'levelname', 'levelno', 'filename',
+            'funcName', 'lineno', 'module', 'message', 'name', 'pathname',
+            'process', 'processName']
+    return ' '.join(['%({0:s})'.format(i) for i in keys])
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'default': {
-            'format': '%(message)s',
+            'format': _log_format(),
             'class': 'pythonjsonlogger.jsonlogger.JsonFormatter',
         },
     },
