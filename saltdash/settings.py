@@ -79,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'saltdash.application'
+WSGI_APPLICATION = 'saltdash.wsgi.application'
 
 
 # Database
@@ -185,7 +185,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, os.pardir, 'client', 'dist')
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, os.pardir, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Python Social Auth
