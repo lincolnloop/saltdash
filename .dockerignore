@@ -1,12 +1,13 @@
 /client/node_modules
 /client/.cache
 /client/dist
+/saltdash/static
 /db.sqlite3
 *.egg-info
+*.sql
 /.venv
 /.env
 /.docker-env
 Dockerfile
-.git
 .DS_Store
 .idea

@@ -14,13 +14,6 @@ readable-log-formatter = "*"
 [packages]
 
 "e1839a8" = {path = ".", editable = true}
-django = "*"
-"psycopg2" = "*"
-social-auth-app-django = "*"
-dj-database-url = "*"
-raven = "*"
-python-json-logger = "*"
-
 
 [requires]
 
