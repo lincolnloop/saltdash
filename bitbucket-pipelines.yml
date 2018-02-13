@@ -25,7 +25,7 @@ pipelines:
         name: Upload
         image: mesosphere/aws-cli
         script:
-          - aws s3 cp _dist/*.tar.gz s3://$S3_PLATTER_BUCKET
+          - aws s3 cp _dist/*.tar.gz s3://$S3_PLATTER_BUCKET --no-progress
           
 definitions:
   services:
