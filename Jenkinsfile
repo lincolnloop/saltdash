@@ -4,7 +4,6 @@ pipeline {
     stage('Prep') {
       agent any
       steps {
-        pwd()
         sh 'mkdir -p _dist'
       }
     }
@@ -12,24 +11,28 @@ pipeline {
       agent {
         docker {
           image 'ipmb/ubuntu-python-build:latest'
-          args '-v _dist:/dist -v .:/code'
+          args '-v ${env.WORKSPACE}_dist:/dist -v ${env.WORKSPACE}:/code'
         }
         
       }
       steps {
-        sh '""'
+        sh '/build.sh'
       }
     }
     stage('Test') {
       agent {
         docker {
           image 'ipmb/ubuntu-python-clean:latest'
-          args '-v _dist:/dist'
+          args '-v ${env.WORKSPACE}/_dist:/dist'
         }
         
       }
+      environment {
+        SECRET_KEY = 'not-secret'
+        ALLOWED_HOSTS = '*'
+      }
       steps {
-        sh '/dist/*.tar.gz'
+        sh '/test.sh /dist/*.tar.gz'
       }
     }
   }
