@@ -10,6 +10,8 @@ pipelines:
     - step:
         name: Build
         image: ipmb/ubuntu-python-build:latest
+        services:
+          - docker
         script:
           - mkdir -p _dist
           - docker run -v $BITBUCKET_CLONE_DIR:/code ipmb/ubuntu-python-build:latest -v $BITBUCKET_CLONE_DIR/_dist:/dist /build.sh
@@ -21,6 +23,7 @@ pipelines:
         script:
           - docker run -e DATABASE_URL=postgres://postgres:secret@postgres:5432/postgres -e SECRET_KEY=secret -e ALLOWED_HOSTS='*' -v $BITBUCKET_CLONE_DIR/_dist:/dist /test.sh /dist/*.tar.gz
         services:
+          - docker
           - postgres
           
 definitions:
