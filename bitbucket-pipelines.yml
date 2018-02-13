@@ -10,30 +10,22 @@ pipelines:
     - step:
         name: Build
         image: ipmb/ubuntu-python-build:latest
-        services:
-          - docker
         script:
-          - mkdir -p _dist
-          - |
-            docker run -v $BITBUCKET_CLONE_DIR:/code \
-                       -v $BITBUCKET_CLONE_DIR/_dist:/dist \
-                       ipmb/ubuntu-python-build:latest /build.sh
-          - ls -lh _dist
+          - ln -s $BITBUCKET_CLONE_DIR /code
+          - /build.sh
         artifacts:
-          - _dist/*.tar.gz
+          - /dist/*.tar.gz
     - step:
         name: Test
         image: ipmb/ubuntu-python-clean:latest
         script:
-          - echo -e "Artifact:\n$(cd _dist && ls -lh *.tar.gz | tail -n1)"
           - export SECRET_KEY=secret
           - export ALLOWED_HOSTS='*'
           - export DATABASE_URL=postgres://postgres:secret@localhost:5432/postgres
-          - /test.sh $BITBUCKET_CLONE_DIR/_dist/*.tar.gz
+          - /test.sh /dist/*.tar.gz
           - mkdir test-reports
-          - cp -r /results/junit.xml test-reports/junit.xml
+          - cp /results/junit.xml test-reports/junit.xml
         services:
-          - docker
           - postgres
           
 definitions:
