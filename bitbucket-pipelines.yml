@@ -12,9 +12,11 @@ pipelines:
         image: ipmb/ubuntu-python-build:latest
         script:
           - ln -s $BITBUCKET_CLONE_DIR /code
+          - mkdir -p _dist
           - /build.sh
+          - cp /dist/*.tar.gz _dist/
         artifacts:
-          - /dist/*.tar.gz
+          - _dist/*.tar.gz
     - step:
         name: Test
         image: ipmb/ubuntu-python-clean:latest
@@ -22,7 +24,7 @@ pipelines:
           - export SECRET_KEY=secret
           - export ALLOWED_HOSTS='*'
           - export DATABASE_URL=postgres://postgres:secret@localhost:5432/postgres
-          - /test.sh /dist/*.tar.gz
+          - /test.sh _dist/*.tar.gz
           - mkdir test-reports
           - cp /results/junit.xml test-reports/junit.xml
         services:
