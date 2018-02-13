@@ -21,6 +21,11 @@ pipelines:
           - mv /results test-reports
         services:
           - postgres
+    - step:
+        name: Upload
+        image: mesosphere/aws-cli
+        script:
+          - aws s3 cp _dist/*.tar.gz s3://$S3_PLATTER_BUCKET
           
 definitions:
   services:
