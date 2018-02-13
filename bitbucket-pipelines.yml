@@ -24,11 +24,13 @@ pipelines:
         name: Test
         image: ipmb/ubuntu-python-clean:latest
         script:
+          - mkdir -p test-reports
           - |
-            docker run -e DATABASE_URL=postgres://postgres:secret@postgres:5432/postgres
-                       -e SECRET_KEY=secret
-                       -e ALLOWED_HOSTS='*'
-                       -v $BITBUCKET_CLONE_DIR/_dist:/dist
+            docker run -e DATABASE_URL=postgres://postgres:secret@postgres:5432/postgres \
+                       -e SECRET_KEY=secret \
+                       -e ALLOWED_HOSTS='*' \
+                       -v $BITBUCKET_CLONE_DIR/_dist:/dist \
+                       -v $BITBUCKET_CLONE_DIR/test-reports:/results \
                        ipmb/ubuntu-python-clean:latest /test.sh /dist/*.tar.gz
         services:
           - docker
