@@ -14,7 +14,7 @@ pipelines:
           - ln -s $BITBUCKET_CLONE_DIR /code
           - mkdir -p _dist
           - /build.sh
-          - cp /dist/*.tar.gz _dist/
+          - mv /dist/*.tar.gz _dist/
         artifacts:
           - _dist/*.tar.gz
     - step:
@@ -24,7 +24,7 @@ pipelines:
           - export SECRET_KEY=secret
           - export ALLOWED_HOSTS='*'
           - export DATABASE_URL=postgres://postgres:secret@localhost:5432/postgres
-          - /test.sh _dist/*.tar.gz
+          - /test.sh $BITBUCKET_CLONE_DIR/_dist/*.tar.gz
           - mkdir test-reports
           - cp /results/junit.xml test-reports/junit.xml
         services:
