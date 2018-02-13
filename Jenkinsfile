@@ -11,19 +11,18 @@ pipeline {
       agent {
         docker {
           image 'ipmb/ubuntu-python-build:latest'
-          args '-v ${env.WORKSPACE}_dist:/dist -v ${env.WORKSPACE}:/code'
         }
         
       }
       steps {
-        sh '/build.sh'
+        sh '/build.sh ${env.WORKSPACE}'
+        archiveArtifacts '/dist/*.tar.gz'
       }
     }
     stage('Test') {
       agent {
         docker {
           image 'ipmb/ubuntu-python-clean:latest'
-          args '-v ${env.WORKSPACE}/_dist:/dist'
         }
         
       }
