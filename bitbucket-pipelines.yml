@@ -19,7 +19,7 @@ pipelines:
                        -v $BITBUCKET_CLONE_DIR/_dist:/dist \
                        ipmb/ubuntu-python-build:latest /build.sh
         artifacts:
-          - /dist/*.tar.gz
+          - _dist/*.tar.gz
     - step:
         name: Test
         image: ipmb/ubuntu-python-clean:latest
