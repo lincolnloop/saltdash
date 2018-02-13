@@ -1,0 +1,31 @@
+# This is a sample build configuration for Python.
+# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: ubuntu:16.04
+
+pipelines:
+  default:
+    - step:
+        name: Build
+        image: ipmb/ubuntu-python-build:latest
+        script:
+          - mkdir -p _dist
+          - docker run -v $BITBUCKET_CLONE_DIR:/code ipmb/ubuntu-python-build:latest -v $BITBUCKET_CLONE_DIR/_dist:/dist /build.sh
+        artifacts:
+          - /dist/*.tar.gz
+    - step:
+        name: Test
+        image: ipmb/ubuntu-python-clean:latest
+        script:
+          - docker run -e DATABASE_URL=postgres://postgres:secret@postgres:5432/postgres -e SECRET_KEY=secret -e ALLOWED_HOSTS='*' -v $BITBUCKET_CLONE_DIR/_dist:/dist /test.sh /dist/*.tar.gz
+        services:
+          - postgres
+          
+definitions:
+  services:
+    postgres:
+      image: postgres:9.6
+      environment:
+        POSTGRES_PASSWORD: secret
