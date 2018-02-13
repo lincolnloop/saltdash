@@ -1,8 +1,3 @@
-# This is a sample build configuration for Python.
-# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
 image: ubuntu:16.04
 
 pipelines:
@@ -11,8 +6,7 @@ pipelines:
         name: Build
         image: ipmb/ubuntu-python-build:latest
         script:
-          - ln -s $BITBUCKET_CLONE_DIR /code
-          - /build.sh
+          - /build.sh $BITBUCKET_CLONE_DIR
           - mv /dist _dist
         artifacts:
           - _dist/*.tar.gz
