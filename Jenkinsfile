@@ -5,7 +5,6 @@ pipeline {
       agent {
         docker {
           image 'ipmb/ubuntu-python-build:latest'
-          args '-u root'
         }
         
       }
