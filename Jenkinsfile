@@ -5,12 +5,14 @@ pipeline {
       agent {
         docker {
           image 'ipmb/ubuntu-python-build:latest'
+          args '-u root'
         }
         
       }
       steps {
         sh '/build.sh .'
         sh 'mv /dist _dist'
+        sh 'chown -r 112:116 .'
         archiveArtifacts(artifacts: '_dist/*.tar.gz', onlyIfSuccessful: true)
       }
     }
