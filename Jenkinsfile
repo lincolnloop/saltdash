@@ -15,7 +15,7 @@ pipeline {
         
       }
       environment {
-        HOME = '/root'
+        HOME = '/tmp'
       }
       steps {
         sh '/build.sh .'
