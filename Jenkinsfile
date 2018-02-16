@@ -32,6 +32,7 @@ pipeline {
       steps {
         unstash 'platter'
         sh '/test.sh ${WORKSPACE}/_dist/*.tar.gz'
+        junit '/results/junit.xml'
       }
     }
   }
