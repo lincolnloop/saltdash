@@ -21,7 +21,7 @@ pipeline {
       agent {
         docker {
           image 'ipmb/ubuntu-python-clean:latest'
-          args '-u root'
+          args '-u root --net=host'
         }
         
       }
@@ -32,8 +32,7 @@ pipeline {
       }
       steps {
         unstash 'platter'
-        sh '''set +e
-/test.sh ${WORKSPACE}/_dist/*.tar.gz'''
+        sh '/test.sh ${WORKSPACE}/_dist/*.tar.gz || true'
         junit '/results/junit.xml'
       }
     }
