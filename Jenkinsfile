@@ -28,6 +28,7 @@ pipeline {
       environment {
         SECRET_KEY = 'not-secret'
         ALLOWED_HOSTS = '*'
+        DATABASE_URL = 'postgres://user:user@localhost:5432/saltdash'
       }
       steps {
         unstash 'platter'
