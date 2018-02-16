@@ -33,7 +33,9 @@ pipeline {
       steps {
         unstash 'platter'
         sh '/test.sh ${WORKSPACE}/_dist/*.tar.gz || true'
-        junit '/results/junit.xml'
+        sh 'mv /results _results'
+        sh 'chown -R 112:116 .'
+        junit '_results/junit.xml'
       }
     }
   }
