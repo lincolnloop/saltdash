@@ -14,6 +14,9 @@ pipeline {
         }
         
       }
+      environment {
+        HOME = '/root'
+      }
       steps {
         sh '/build.sh .'
         archiveArtifacts '/dist/*.tar.gz'
