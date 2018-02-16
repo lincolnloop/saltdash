@@ -14,12 +14,14 @@ pipeline {
         sh 'mv /dist _dist'
         sh 'chown -R 112:116 .'
         archiveArtifacts(artifacts: '_dist/*.tar.gz', onlyIfSuccessful: true)
+        stash '_dist/*.tar.gz'
       }
     }
     stage('Test') {
       agent {
         docker {
           image 'ipmb/ubuntu-python-clean:latest'
+          args '-u root'
         }
         
       }
@@ -28,6 +30,7 @@ pipeline {
         ALLOWED_HOSTS = '*'
       }
       steps {
+        unstash '_dist/*.tar.gz'
         sh '/test.sh _dist/*.tar.gz'
       }
     }
