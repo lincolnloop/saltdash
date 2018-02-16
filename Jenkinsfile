@@ -15,7 +15,7 @@ pipeline {
         
       }
       steps {
-        sh '/build.sh ${WORKSPACE}'
+        sh '/build.sh .'
         archiveArtifacts '/dist/*.tar.gz'
       }
     }
