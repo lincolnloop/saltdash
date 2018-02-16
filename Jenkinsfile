@@ -14,7 +14,7 @@ pipeline {
         sh 'mv /dist _dist'
         sh 'chown -R 112:116 .'
         archiveArtifacts(artifacts: '_dist/*.tar.gz', onlyIfSuccessful: true)
-        stash '_dist/*.tar.gz'
+        stash(name: 'platter', includes: '_dist/*.tar.gz')
       }
     }
     stage('Test') {
@@ -30,7 +30,7 @@ pipeline {
         ALLOWED_HOSTS = '*'
       }
       steps {
-        unstash '_dist/*.tar.gz'
+        unstash 'platter'
         sh '/test.sh _dist/*.tar.gz'
       }
     }
