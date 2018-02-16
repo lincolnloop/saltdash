@@ -1,12 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Prep') {
-      agent any
-      steps {
-        sh 'mkdir -p _dist'
-      }
-    }
     stage('Build') {
       agent {
         docker {
@@ -17,7 +11,8 @@ pipeline {
       }
       steps {
         sh '/build.sh .'
-        archiveArtifacts '/dist/*.tar.gz'
+        sh 'mv /dist _dist'
+        archiveArtifacts(artifacts: '_dist/*.tar.gz', onlyIfSuccessful: true)
       }
     }
     stage('Test') {
@@ -32,7 +27,7 @@ pipeline {
         ALLOWED_HOSTS = '*'
       }
       steps {
-        sh '/test.sh /dist/*.tar.gz'
+        sh '/test.sh _dist/*.tar.gz'
       }
     }
   }
