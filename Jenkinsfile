@@ -12,7 +12,7 @@ pipeline {
       steps {
         sh '/build.sh .'
         sh 'mv /dist _dist'
-        sh 'chown -r 112:116 .'
+        sh 'chown -R 112:116 .'
         archiveArtifacts(artifacts: '_dist/*.tar.gz', onlyIfSuccessful: true)
       }
     }
