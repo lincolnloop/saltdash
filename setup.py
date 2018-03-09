@@ -23,4 +23,5 @@ class InitDevelop(develop):
 
 setup(
     cmdclass={'develop': InitDevelop},
+    data_files=[('etc', ['setup.cfg'])],
 )

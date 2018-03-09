@@ -1,8 +1,6 @@
 #!/bin/bash
 # Collectstatic to include in package
 set -exu
-#
-cp $SOURCE_DIR/setup.cfg $DATA_DIR
 
 cd $SOURCE_DIR/client
 yarn install --production
