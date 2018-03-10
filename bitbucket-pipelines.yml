@@ -5,6 +5,9 @@ pipelines:
     - step:
         name: Build
         image: ipmb/ubuntu-python-build:latest
+        caches:
+          - pip
+          - yarn
         script:
           - /build.sh $BITBUCKET_CLONE_DIR
           - mv /dist _dist
@@ -35,3 +38,5 @@ definitions:
       image: postgres:9.6
       environment:
         POSTGRES_PASSWORD: secret
+  caches:
+    yarn: /usr/local/share/.cache
