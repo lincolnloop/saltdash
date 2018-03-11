@@ -39,14 +39,14 @@ Your environment should include the following variables:
 
 ### Required
 
-* `DEBUG`: `False` (always in production)
-* `ALLOWED_HOSTS`: a comma-separated list of hosts allowed to serve the site ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts))
 * `SECRET_KEY`: a long random string you keep secret ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key))
 * `DATABASE_URL`: `postgres://USER:PASSWORD@HOST:PORT/NAME`
 
 
 ### Optional
 
+* `DEBUG`: `True` (never in production)
+* `ALLOWED_HOSTS`: a comma-separated list of hosts allowed to serve the site ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts))
 * `GITHUB_TEAM_ID`: ID from the list provided by the `curl` command below
 * `GITHUB_CLIENT_ID`: OAuth Client ID
 * `GITHUB_CLIENT_SECRET`: OAuth Client Secret

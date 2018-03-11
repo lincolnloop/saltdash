@@ -19,7 +19,6 @@ pipelines:
         image: ipmb/ubuntu-python-clean:latest
         script:
           - export SECRET_KEY=secret
-          - export ALLOWED_HOSTS='*'
           - export DATABASE_URL=postgres://postgres:secret@localhost:5432/postgres
           - /test.sh $BITBUCKET_CLONE_DIR/_dist/*.tar.gz
           - mv /results test-reports
