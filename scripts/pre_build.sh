@@ -6,7 +6,7 @@ cd $SOURCE_DIR/client
 yarn install --production
 
 # Setup project so we can collectstatic
-pip install -e $SOURCE_DIR
-export SECRET_KEY=none
-export ALLOWED_HOSTS=none
-manage.py collectstatic --noinput
+cd $SOURCE_DIR
+pipenv install --deploy
+echo "SECRET_KEY=secret" > .env
+pipenv run manage.py collectstatic --noinput
