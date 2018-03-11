@@ -8,6 +8,7 @@ pipelines:
         caches:
           - pip
           - yarn
+          - parcel
         script:
           - /build.sh $BITBUCKET_CLONE_DIR
           - mv /dist _dist
@@ -40,3 +41,4 @@ definitions:
         POSTGRES_PASSWORD: secret
   caches:
     yarn: /usr/local/share/.cache
+    parcel: client/.cache
