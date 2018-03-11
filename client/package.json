@@ -1,8 +1,8 @@
 {
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run build",
-    "build": "npm run build:css && npm run build:js && npm run build:assets",
+    "postinstall": "yarn run build",
+    "build": "yarn run build:css && yarn run build:js && yarn run build:assets",
     "build:css": "parcel build scss/app.scss",
     "build:js": "parcel build js/app.js",
     "build:assets": "rsync -av --delete ./assets ./dist/",
