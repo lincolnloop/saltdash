@@ -21,7 +21,7 @@ from django.urls import reverse_lazy
 from ._logging import LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(os.path.abspath(__file__) / '..' / '..' / '..')
+BASE_DIR = Path(os.path.abspath(__file__)) / '..' / '..'
 
 # Disable Django's logging setup
 LOGGING_CONFIG = None
