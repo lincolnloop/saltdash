@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from distutils.util import strtobool
 import logging.config
+from pathlib import Path
 
 import dj_database_url
 from django.urls import reverse_lazy
@@ -20,7 +21,7 @@ from django.urls import reverse_lazy
 from ._logging import LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = Path(os.path.abspath(__file__) / '..' / '..' / '..')
 
 # Disable Django's logging setup
 LOGGING_CONFIG = None
@@ -71,7 +72,7 @@ ROOT_URLCONF = 'saltdash.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [str(BASE_DIR / 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,9 +134,9 @@ RAVEN_CONFIG = {'dsn': os.getenv('SENTRY_DSN')}
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, os.pardir, 'client', 'dist')
+    str(BASE_DIR / '..' / 'client' / 'dist')
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = str(BASE_DIR / 'static')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Python Social Auth
