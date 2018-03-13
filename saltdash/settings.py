@@ -172,6 +172,19 @@ LOGGING = {
         },
     },
 }
+if 'SYSLOG_IDENTIFIER' in os.environ:
+    try:
+        from systemd import journal
+        LOGGING['formatters']['default'] = {
+            'format': '%(message)s'
+        }
+        LOGGING['handlers']['console'] = {
+            'class': 'systemd.journal.JournalHandler',
+            'SYSLOG_IDENTIFIER': os.getenv('SYSLOG_IDENTIFIER')
+        }
+    except ImportError:
+        pass
+
 # Add runserver request logging back in
 for k in ['formatters', 'handlers', 'loggers']:
     LOGGING[k]['django.server'] = DEFAULT_LOGGING[k]['django.server']
