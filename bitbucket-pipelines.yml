@@ -4,7 +4,7 @@ pipelines:
   default:
     - step:
         name: Build
-        image: ipmb/ubuntu-python-build:latest
+        image: ipmb/ubuntu-python-platter:latest
         caches:
           - pip
           - yarn
