@@ -8,7 +8,7 @@ set -eufx
 cd $SOURCE_DIR/client
 yarn install --production
 cd $SOURCE_DIR
+cp setup.cfg $DATA_DIR
 pipenv install --deploy
-echo "SECRET_KEY=secret" > .env
 pipenv run manage.py collectstatic --noinput
 """

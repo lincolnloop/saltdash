@@ -1,4 +1,6 @@
-.env
+/config.yml
+.pytest_cache
+.coverage
 
 node_modules
 /client/.cache

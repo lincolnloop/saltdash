@@ -11,33 +11,37 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from distutils.util import strtobool
 import logging.config
 from pathlib import Path
 
 import dj_database_url
 from django.urls import reverse_lazy
+from file_or_env import FileOrEnv
 
 from ._logging import LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(os.path.abspath(__file__)) / '..' / '..'
+BASE_DIR = (Path(os.path.abspath(__file__)) / '..' / '..').resolve()
 
 # Disable Django's logging setup
 LOGGING_CONFIG = None
 logging.config.dictConfig(LOGGING)
 log = logging.getLogger(__name__)
 
+config = FileOrEnv('config.yml')
+if config.config_file:
+    log.info('Config loaded from %s', config.config_file)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = strtobool(os.getenv('DEBUG', 'false'))
+DEBUG = config.get('DEBUG', 'false', cast=bool)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = config.get('ALLOWED_HOSTS', '*', cast=list)
 
 
 # Application definition
@@ -58,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,7 +96,7 @@ WSGI_APPLICATION = 'saltdash.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {'default': dj_database_url.config('DATABASE_URL')}
+DATABASES = {'default': dj_database_url.parse(config['DATABASE_URL'])}
 
 
 # Password validation
@@ -127,7 +132,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-RAVEN_CONFIG = {'dsn': os.getenv('SENTRY_DSN')}
+RAVEN_CONFIG = {'dsn': config.get('SENTRY_DSN')}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -137,7 +142,7 @@ STATICFILES_DIRS = [
     str(BASE_DIR / '..' / 'client' / 'dist')
 ]
 STATIC_ROOT = str(BASE_DIR / 'static')
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Python Social Auth
 AUTHENTICATION_BACKENDS = [
@@ -155,11 +160,11 @@ LOGIN_REDIRECT_URL = '/'
 # create token https://github.com/settings/tokens
 # curl -H "Authorization: token <token>" \
 #       https://api.github.com/orgs/<org>/teams
-SOCIAL_AUTH_GITHUB_TEAM_ID = os.getenv('GITHUB_TEAM_ID')
+SOCIAL_AUTH_GITHUB_TEAM_ID = config.get('GITHUB_TEAM_ID')
 
 # https://github.com/organizations/<org>/settings/applications
-SOCIAL_AUTH_GITHUB_TEAM_KEY = os.getenv('GITHUB_CLIENT_ID')
-SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.getenv('GITHUB_CLIENT_SECRET')
+SOCIAL_AUTH_GITHUB_TEAM_KEY = config.get('GITHUB_CLIENT_ID')
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = config.get('GITHUB_CLIENT_SECRET')
 # Need to read teams to know if user can login
 SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['read:org']
 

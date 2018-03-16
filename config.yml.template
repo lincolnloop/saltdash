@@ -1,0 +1,3 @@
+DEBUG: true
+SECRET_KEY: $secret_key
+DATABASE_URL: postgres://localhost:5432/salt

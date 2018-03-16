@@ -16,7 +16,7 @@ Install [Pipenv](https://docs.pipenv.org/) for the back-end.
 ```bash
 (cd client; yarn)
 pipenv --three install --dev
-$EDITOR .env  # if necessary
+$EDITOR config.yml  # if necessary
 pipenv shell
 saltdash migrate
 saltdash runserver
@@ -33,9 +33,9 @@ yarn run watch
 
 ## Running in Production
 
-`saltdash runserver` is not suitable for production. We recommend using `uWSGI` in production, but any production-level WSGI server (`gunicorn`, `waitress`, etc.) should work fine. A sample `uwsgi.ini` is provided in the repo. If Docker is more your speed, there's a `Dockerfile` as well.
+`saltdash runserver` is not suitable for production. [Gunicorn](http://gunicorn.org/) is included and can be run via `gunicorn saltdash.wsgi:application` If Docker is more your speed, there's a `Dockerfile` as well.
 
-Your environment should include the following variables:
+Your environment should include the following variables (alternatively, you can define them in `config.yml`):
 
 ### Required
 
