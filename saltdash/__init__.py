@@ -19,10 +19,10 @@ config.define_values(
     Value('ALLOWED_HOSTS', default=['*'], help="Hosts allowed to serve the "
           "site "
           "https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts"),
-    Value('GITHUB_TEAM_ID', required=False),
-    Value('GITHUB_CLIENT_ID', required=False),
-    Value('GITHUB_CLIENT_SECRET', required=False),
-    Value('SENTRY_DSN', required=False)
+    Value('GITHUB_TEAM_ID', default=''),
+    Value('GITHUB_CLIENT_ID', default=''),
+    Value('GITHUB_CLIENT_SECRET', default=''),
+    Value('SENTRY_DSN', default='')
 )
 
 
