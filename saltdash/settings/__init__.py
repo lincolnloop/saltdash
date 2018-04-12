@@ -18,6 +18,7 @@ import dj_database_url
 from django.urls import reverse_lazy
 
 from saltdash import config
+config.load()
 from ._logging import LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
