@@ -17,7 +17,7 @@ jobs:
           command: |
                docker run --rm --detach -e POSTGRES_PASSWORD=password --name=postgres postgres:9.6-alpine
                docker run --name=tests --link postgres:postgres \
-                -e "DATABASE_URL=postgres://postgres:password@localhost:5432/postgres" app
+                -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" app
                docker kill postgres
                docker cp tests:/results .test-reports
                docker cp tests:/dist dist
