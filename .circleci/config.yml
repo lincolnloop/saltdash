@@ -1,7 +1,3 @@
-image: postgres:9.6
-      environment:
-        POSTGRES_PASSWORD: secret
-
 version: 2
 jobs:
   build:
