@@ -34,7 +34,7 @@ class Command(BaseCommand):
                       function="TO_TIMESTAMP")).filter(date__lt=before)
         self.stdout.write(self.style.WARNING(
             'Deleting {} jobs and {} results created before {}.'.format(
-                jobs.count(), results.count(), since
+                jobs.count(), results.count(), before
         )))
 
         if not options['no_input']:
