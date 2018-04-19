@@ -1,0 +1,51 @@
+image: postgres:9.6
+      environment:
+        POSTGRES_PASSWORD: secret
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Build
+          command: docker build -t app -f Dockerfile.test .
+
+      - run:
+          name: Test
+          command: |
+               docker run --rm --detach -e POSTGRES_PASSWORD=password --name=postgres postgres:9.6-alpine
+               docker run --name=tests --link postgres:postgres \
+                -e "DATABASE_URL=postgres://postgres:password@localhost:5432/postgres" app
+               docker kill postgres
+               docker cp tests:/results .test-reports
+               docker cp tests:/dist dist
+
+      - store_test_results:
+          path: .test-reports
+
+      - store_artifacts:
+          path: dist
+
+      - restore_cache:
+          keys:
+            - deploy
+
+      - run:
+          name: Deploy
+          command: |
+              sudo -H pip3.6 install awscli
+              aws s3 cp dist/*.tar.gz s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/${CIRCLE_SHA1}.tar.gz --no-progress
+              echo ${CIRCLE_SHA1} > latest
+              aws s3 cp latest s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/latest
+
+      - save_cache:
+          key: deploy
+          paths:
+            - "/root/.cache/pip"
+
