@@ -1,6 +1,7 @@
 /saltdash.yml
 .pytest_cache
 .coverage
+*.sql
 
 node_modules
 /client/.cache

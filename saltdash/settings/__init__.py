@@ -17,7 +17,7 @@ from pathlib import Path
 import dj_database_url
 from django.urls import reverse_lazy
 
-from saltdash import config
+from saltdash.conf import config
 config.load()
 from ._logging import LOGGING
 
