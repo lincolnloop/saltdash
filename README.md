@@ -16,7 +16,7 @@ Install [Pipenv](https://docs.pipenv.org/) for the back-end.
 ```bash
 (cd client; yarn)
 pipenv --three install --dev
-$EDITOR config.yml  # if necessary
+saltdash-generate-config > saltdash.yml  # edit if necessary
 pipenv shell
 saltdash migrate
 saltdash runserver
@@ -33,24 +33,44 @@ yarn run watch
 
 ## Running in Production
 
-`saltdash runserver` is not suitable for production. [Gunicorn](http://gunicorn.org/) is included and can be run via `gunicorn saltdash.wsgi:application` If Docker is more your speed, there's a `Dockerfile` as well.
+`saltdash runserver` is not suitable for production. A production-level
+webserver is included and can be started with `saltdash serve`. If Docker is
+more your speed, there's a `Dockerfile` as well.
 
-Your environment should include the following variables (alternatively, you can define them in `config.yml`):
+### Configuration
 
-### Required
+Configuration can be done via environment variables, a file, or a combination
+of both thanks to [`Goodconf`](https://pypi.org/project/goodconf/). By default
+it will look for a YAML file named `saltdash.yml` in `/etc/` or the current
+directory. You can also specify a configuration file with the `-C` or `--config`
+flags. `saltdash-generate-config` can be used to generate a sample config file
+containing the following variables:
 
-* `SECRET_KEY`: a long random string you keep secret ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key))
-* `DATABASE_URL`: `postgres://USER:PASSWORD@HOST:PORT/NAME`
-
-
-### Optional
-
-* `DEBUG`: `True` (never in production)
-* `ALLOWED_HOSTS`: a comma-separated list of hosts allowed to serve the site ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts))
-* `GITHUB_TEAM_ID`: ID from the list provided by the `curl` command below
-* `GITHUB_CLIENT_ID`: OAuth Client ID
-* `GITHUB_CLIENT_SECRET`: OAuth Client Secret
-* `SENTRY_DSN`: For error reporting to [Sentry](https://sentry.io)
+* **DEBUG**
+  Enable debugging.
+  type: `bool`
+* **SECRET_KEY**  _REQUIRED_
+  a long random string you keep secret https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key
+  type: `str`
+* **DATABASE_URL**
+  type: `str`
+  default: `postgres://localhost:5432/salt`
+* **ALLOWED_HOSTS**
+  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
+  type: `list`
+  default: `['*']`
+* **GITHUB_TEAM_ID**
+  type: `str`
+* **GITHUB_CLIENT_ID**
+  type: `str`
+* **GITHUB_CLIENT_SECRET**
+  type: `str`
+* **SENTRY_DSN**
+  type: `str`
+* **LISTEN**
+  Socket for webserver to listen on.
+  type: `str`
+  default: `127.0.0.1:8077`
 
 GitHub Team authentication is included by setting the relevant `GITHUB_*` variables.
 
