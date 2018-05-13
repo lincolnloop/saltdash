@@ -18,10 +18,10 @@
     "default": {
         "attrs": {
             "hashes": [
-                "sha256:1c7960ccfd6a005cd9f7ba884e6316b5e430a3f1a6c37c5f87d8b43f83b54ec9",
-                "sha256:a17a9573a6f475c99b551c0e0a812707ddda1ec9653bed04c13841404ed6f450"
+                "sha256:4b90b09eeeb9b88c35bc642cbac057e45a5fd85367b985bd2809c62b7b939265",
+                "sha256:e0d0eb91441a3b53dab4d9b743eafc1ac44476296a2053b6ca3af0b139faf87b"
             ],
-            "version": "==17.4.0"
+            "version": "==18.1.0"
         },
         "certifi": {
             "hashes": [
@@ -91,6 +91,7 @@
                 "sha256:24d7f2f94f7f3cb6061acb215685e5125fbcdc40a857eff9de22518820b0a4f4",
                 "sha256:702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20"
             ],
+            "markers": "python_version >= '3.0'",
             "version": "==0.5.0"
         },
         "dj-database-url": {
@@ -117,13 +118,6 @@
                 "sha256:828fed415873da26bee78d518ce3a26936d80d61a600f8c3ccabc172cb90e843"
             ],
             "version": "==0.9.1"
-        },
-        "gunicorn": {
-            "hashes": [
-                "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6",
-                "sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622"
-            ],
-            "version": "==19.7.1"
         },
         "idna": {
             "hashes": [
@@ -203,10 +197,10 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:6266f87ab64692112e5477eba395cfedda53b1933ccd29478e671e73b420c19c",
-                "sha256:fae491d1874f199537fd5872b5e1f0e74a009b979df9d53d1553fd03da1703e1"
+                "sha256:54713b26c97538db6ff0703a12b19aeaeb60b5e599de542e7fca0ec83b9038e8",
+                "sha256:829230122facf05a5f81a6d4dfe6454a04978ea3746853b2b84567ecf8e5c526"
             ],
-            "version": "==3.5.0"
+            "version": "==3.5.1"
         },
         "pytest-cov": {
             "hashes": [
@@ -317,6 +311,13 @@
             ],
             "version": "==1.22"
         },
+        "waitress": {
+            "hashes": [
+                "sha256:40b0f297a7f3af61fbfbdc67e59090c70dc150a1601c39ecc9f5f1d283fb931b",
+                "sha256:d33cd3d62426c0f1b3cd84ee3d65779c7003aae3fc060dee60524d10a57f05a9"
+            ],
+            "version": "==1.1.0"
+        },
         "whitenoise": {
             "hashes": [
                 "sha256:15f43b2e701821b95c9016cf469d29e2a546cb1c7dead584ba82c36f843995cf",
@@ -357,11 +358,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:85882f97d75122ff8cdfe129215a408085a26039527110c8d4a2b8a5e45b7639",
-                "sha256:a6ac981381b3f5f604b37a293369963485200e3639fb0404fa76092383c10c41"
+                "sha256:a0c96853549b246991046f32d19db7140f5b1a644cc31f0dc1edc86713b7676f",
+                "sha256:eca537aa61592aca2fef4adea12af8e42f5c335004dfa80c78caf80e8b525e5c"
             ],
             "index": "pypi",
-            "version": "==6.3.1"
+            "version": "==6.4.0"
         },
         "ipython-genutils": {
             "hashes": [

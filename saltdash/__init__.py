@@ -21,6 +21,8 @@ class Config(GoodConf):
     GITHUB_CLIENT_ID = Value(default='')
     GITHUB_CLIENT_SECRET = Value(default='')
     SENTRY_DSN = Value(default='')
+    LISTEN = Value(default='127.0.0.1:8077',
+                 help="Socket for webserver to listen on.")
 
 
 config = Config(file_env_var='SALTDASH_CONF',
