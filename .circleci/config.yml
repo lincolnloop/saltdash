@@ -37,6 +37,7 @@ jobs:
           command: |
               sudo -H pip3.6 install awscli
               aws s3 cp dist/*.tar.gz s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/${CIRCLE_SHA1}.tar.gz --no-progress
+              aws s3 cp dist/*.pyz s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/${CIRCLE_SHA1}.pyz --no-progress
               echo ${CIRCLE_SHA1} > latest
               aws s3 cp latest s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/latest
 
