@@ -19,5 +19,5 @@ COPY --from=build /code/setup.cfg .
 ENV SECRET_KEY=secret
 # Trigger shiv to unpack
 RUN apt-get update -q && apt-get install -y python3.6 libpython3.6 python3.6-distutils && \
-    mv /dist/saltdash-*.pyz /bin/saltdash && saltdash help
+    ln -s /dist/saltdash-*.pyz /bin/saltdash && saltdash help
 CMD /bin/saltdash test -- --junitxml=/results/junit.xml
