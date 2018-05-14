@@ -1,15 +1,72 @@
+import codecs
 import logging
+import os
+import socket
 import time
 from urllib.parse import quote
 
 import waitress
 from .. import config, wsgi
 
+log = logging.getLogger(__name__)
+
+
+class NonBindingServer(waitress.server.UnixWSGIServer):
+    """
+    Bypass binding to the socket.
+    In the case of Systemd sockets, it is already bound.
+    """
+    def bind_server_socket(self):
+        pass
+
+
+def _is_systemd():
+    listen_pid = int(os.environ.get('LISTEN_PID', 0))
+    return listen_pid == os.getpid()
+
+
+def systemd_notify(msg):
+    """
+    Allow app to be setup as `Type=notify` in systemd
+    Sending signals when it is ready to start serving.
+    """
+    if 'NOTIFY_SOCKET' not in os.environ:
+        log.debug('No systemd NOTIFY_SOCKET set')
+        return
+    msg = codecs.latin_1_encode(msg)[0]
+    addr = os.environ['NOTIFY_SOCKET']
+    if addr[0] == '@':
+        addr = '\0' + addr[1:]
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+    try:
+        sock.connect(addr)
+        sock.sendall(msg)
+    except:
+        log.exception('Could not notify systemd')
+
 
 def start():
     """Start webserver"""
     logged_app = TransLogger(wsgi.application)
-    waitress.serve(logged_app, listen=config.LISTEN)
+    # Work with systemd socket activation
+    if _is_systemd() and not config.LISTEN:
+        wsgi_server = NonBindingServer(
+            logged_app,
+            _sock=socket.fromfd(3, socket.AF_UNIX, socket.SOCK_STREAM)
+        )
+    elif config.LISTEN.startswith('/'):
+        wsgi_server = waitress.server.create_server(logged_app,
+                                                    unix_socket=config.LISTEN)
+    else:
+        wsgi_server = waitress.server.create_server(logged_app,
+                                                    listen=config.LISTEN)
+    if wsgi.warmup.status_code != 200:
+        log.error("Warmup failed with status code %s. Shutting down.",
+                  wsgi.warmup.status_code)
+        exit(1)
+    wsgi_server.print_listen('Serving on {}:{}')
+    systemd_notify('READY=1')
+    wsgi_server.run()
 
 
 # (c) 2005 Ian Bicking and contributors; written for Paste (http://pythonpaste.org)

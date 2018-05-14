@@ -76,6 +76,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'saltdash.urls'
+HEALTHCHECK_URL = '/-/health/'
+ALIVE_URL = '/-/alive/'
 
 TEMPLATES = [
     {
