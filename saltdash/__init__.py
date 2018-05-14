@@ -27,3 +27,8 @@ class Config(GoodConf):
 
 config = Config(file_env_var='SALTDASH_CONF',
                 default_files=['saltdash.yml', '/etc/saltdash.yml'])
+
+
+def generate_config():
+    """Entrypoint for dumping out sample config"""
+    print(config.generate_yaml())
