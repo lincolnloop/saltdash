@@ -14,9 +14,7 @@ Install [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front
 Install [Pipenv](https://docs.pipenv.org/) for the back-end.
 
 ```bash
-(cd client; yarn)
-pipenv --three install --dev
-saltdash-generate-config > saltdash.yml  # edit if necessary
+make all
 pipenv shell
 saltdash migrate
 saltdash runserver
@@ -41,7 +39,7 @@ more your speed, there's a `Dockerfile` as well.
 
 Configuration can be done via environment variables, a file, or a combination
 of both thanks to [`Goodconf`](https://pypi.org/project/goodconf/). By default
-it will look for a YAML file named `saltdash.yml` in `/etc/` or the current
+it will look for a YAML file named `saltdash.yml` in `/etc/saltdash/` or the current
 directory. You can also specify a configuration file with the `-C` or `--config`
 flags. `saltdash-generate-config` can be used to generate a sample config file
 containing the following variables:

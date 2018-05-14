@@ -26,7 +26,7 @@ class Config(GoodConf):
 
 
 config = Config(file_env_var='SALTDASH_CONF',
-                default_files=['saltdash.yml', '/etc/saltdash.yml'])
+                default_files=['saltdash.yml', '/etc/saltdash/saltdash.yml'])
 
 
 def generate_config():

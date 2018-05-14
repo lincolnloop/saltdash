@@ -10,7 +10,7 @@ jobs:
 
       - run:
           name: Build
-          command: docker build -t app -f Dockerfile.test .
+          command: docker build -t ${CIRCLE_PROJECT_REPONAME} .
 
       - run:
           name: Test
@@ -18,7 +18,9 @@ jobs:
                docker run --rm --detach -e POSTGRES_PASSWORD=password --name=postgres postgres:9.6-alpine
                sleep 2
                docker run --name=tests --link postgres:postgres \
-                -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" app
+                -e SECRET_KEY=s \
+                -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" \
+                ${CIRCLE_PROJECT_REPONAME} saltdash test -- --junitxml=/results/junit.xml
                docker kill postgres
                docker cp tests:/results .test-reports
                docker cp tests:/dist dist

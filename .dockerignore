@@ -10,5 +10,7 @@
 /.env
 /.docker-env
 Dockerfile
+Pipfile.log
+/dist
 .DS_Store
 .idea
