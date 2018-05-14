@@ -20,13 +20,13 @@ jobs:
                docker run --name=tests --link postgres:postgres \
                 -e SECRET_KEY=s \
                 -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" \
-                ${CIRCLE_PROJECT_REPONAME} saltdash test -- --junitxml=/results/junit.xml
+                ${CIRCLE_PROJECT_REPONAME} saltdash test -- --junitxml=.test-results/${CIRCLE_PROJECT_REPONAME}/junit.xml
                docker kill postgres
-               docker cp tests:/results .test-reports
+               docker cp tests:/srv/saltdash/.test-results test-results
                docker cp tests:/dist dist
 
       - store_test_results:
-          path: .test-reports
+          path: test-results
 
       - store_artifacts:
           path: dist
