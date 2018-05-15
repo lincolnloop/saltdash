@@ -1,6 +1,6 @@
 # Changelog
 
-0.9.3 (unreleased)
+0.9.3 (2018-05-15)
 ------------------
 
 - Adds proper SSL handling
