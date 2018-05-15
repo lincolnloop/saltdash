@@ -2,7 +2,7 @@ FROM python:3.6 as build
 ENV LANG C.UTF-8
 
 ENV PATH="/root/.local/bin:${PATH}"
-RUN pip3 install --user pipenv shiv "importlib_resources==0.5"
+RUN pip3 install --user pipenv shiv
 RUN set -ex && \
     apt-get update -q && apt-get install -y lsb-release apt-transport-https rsync && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
