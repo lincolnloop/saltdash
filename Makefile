@@ -29,6 +29,7 @@ setup: Pipfile.log
 saltdash.yml: setup
 	pipenv run saltdash-generate-config > $@
 
+.PHONY: check
 check: setup
 	pipenv run saltdash test
 
