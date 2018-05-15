@@ -1,9 +1,9 @@
 # Changelog
 
-0.9.4 (unreleased)
+0.9.4 (2018-05-15)
 ------------------
 
-- Nothing changed yet.
+- Fixes operation with systemd socket activation
 
 
 0.9.3 (2018-05-15)
