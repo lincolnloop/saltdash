@@ -140,7 +140,7 @@ class Result(models.Model):
             if self.return_val.get('fun') == 'runner.state.orchestrate':
                 return 'orchestrate'
             try:
-                list(self.return_val.values())[0]['__sls__']
+                list(self.return_val.values())[0]['__run_num__']
                 return 'state'
             except (TypeError, IndexError, KeyError):
                 return 'json'
@@ -196,7 +196,7 @@ def _convert_state(key: str, data: dict) -> dict:
         'name': name,
         'success': data['result'],
         'changed': bool(data['changes']),
-        'sls': data['__sls__'],
+        'sls': data.get('__sls__'),
         'changes': data['changes'],
         'duration': data.get('duration', 0),
         'start_time': data.get('start_time'),

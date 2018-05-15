@@ -1,12 +1,16 @@
+.git/objects/*
 /client/node_modules
 /client/.cache
 /client/dist
+/saltdash/static
 /db.sqlite3
 *.egg-info
+*.sql
 /.venv
 /.env
 /.docker-env
 Dockerfile
-.git
+Pipfile.log
+/dist
 .DS_Store
 .idea

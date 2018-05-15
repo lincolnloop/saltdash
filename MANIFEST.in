@@ -1,0 +1,2 @@
+graft saltdash/static
+graft saltdash/templates

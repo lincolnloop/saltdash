@@ -1,6 +1,10 @@
-.env
+/saltdash.yml
+.pytest_cache
+.coverage
 
 node_modules
 /client/.cache
 /client/dist
-/static
+/saltdash/static
+Pipfile.log
+/dist

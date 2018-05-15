@@ -1,0 +1,50 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Build
+          command: docker build -t ${CIRCLE_PROJECT_REPONAME} .
+
+      - run:
+          name: Test
+          command: |
+               docker run --rm --detach -e POSTGRES_PASSWORD=password --name=postgres postgres:9.6-alpine
+               sleep 2
+               docker run --name=tests --link postgres:postgres \
+                -e SECRET_KEY=s \
+                -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" \
+                ${CIRCLE_PROJECT_REPONAME} saltdash test -- --junitxml=.test-results/${CIRCLE_PROJECT_REPONAME}/junit.xml
+               docker kill postgres
+               docker cp tests:/srv/saltdash/.test-results test-results
+               docker cp tests:/dist dist
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: dist
+
+      - restore_cache:
+          keys:
+            - deploy
+
+      - run:
+          name: Deploy
+          command: |
+              sudo -H pip3.6 install awscli
+              aws s3 cp dist/*.pyz s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/${CIRCLE_SHA1}.pyz --no-progress
+              echo ${CIRCLE_SHA1} > latest
+              aws s3 cp latest s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/latest
+
+      - save_cache:
+          key: deploy
+          paths:
+            - "/root/.cache/pip"
+
