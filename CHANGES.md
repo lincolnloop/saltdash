@@ -1,4 +1,4 @@
-# Changelog for saltdash
+# Changelog
 
 0.9.2 (unreleased)
 ------------------
