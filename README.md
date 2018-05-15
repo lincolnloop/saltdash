@@ -11,22 +11,29 @@ Read-only web interface to read from Salt's [external job cache](https://docs.sa
 ![screenshot](https://cldup.com/8TTHBPfhyu.png)
 
 
-## Running Locally
+## Development
 
-Install [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
+### Pre-requisites
 
-Install [Pipenv](https://docs.pipenv.org/) for the back-end.
+* [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
+* [Pipenv](https://docs.pipenv.org/) for the back-end.
+* A Postgresql database
+
+### Installation
 
 ```bash
-make all
-pipenv shell
-saltdash migrate
-saltdash runserver
+git clone git@github.com:lincolnloop/saltdash.git
+cd saltdash
+make all              # download dependencies and build the world
+$EDITOR saltdash.yml  # change settings as needed
+pipenv shell          # activate the Python virtual environment
+saltdash migrate      # setup the database
+saltdash runserver    # run a development server
 ```
 
-## Client-side Development
+### Client-side
 
-Currently using [parcel](https://parceljs.org/). To start a development environment with live reloading, run:
+Uses [parcel](https://parceljs.org/). To start a development environment with live reloading, run:
 
 ```bash
 cd client
@@ -34,6 +41,10 @@ yarn run watch
 ```
 
 ## Running in Production
+
+```bash
+pip install saltdash
+```
 
 `saltdash runserver` is not suitable for production. A production-level
 webserver is included and can be started with `saltdash serve`. If Docker is
@@ -48,31 +59,31 @@ directory. You can also specify a configuration file with the `-C` or `--config`
 flags. `saltdash-generate-config` can be used to generate a sample config file
 containing the following variables:
 
-* **DEBUG**
-  Enable debugging.
-  type: `bool`
-* **SECRET_KEY**  _REQUIRED_
-  a long random string you keep secret https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key
-  type: `str`
-* **DATABASE_URL**
-  type: `str`
-  default: `postgres://localhost:5432/salt`
-* **ALLOWED_HOSTS**
-  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
-  type: `list`
-  default: `['*']`
-* **GITHUB_TEAM_ID**
-  type: `str`
-* **GITHUB_CLIENT_ID**
-  type: `str`
-* **GITHUB_CLIENT_SECRET**
-  type: `str`
-* **SENTRY_DSN**
-  type: `str`
-* **LISTEN**
-  Socket for webserver to listen on.
-  type: `str`
-  default: `127.0.0.1:8077`
+* **DEBUG**  
+  Enable debugging.  
+  type: `bool`  
+* **SECRET_KEY**  _REQUIRED_  
+  a long random string you keep secret https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key  
+  type: `str`  
+* **DATABASE_URL**  
+  type: `str`  
+  default: `postgres://localhost:5432/salt`  
+* **ALLOWED_HOSTS**  
+  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts  
+  type: `list`  
+  default: `['*']`  
+* **GITHUB_TEAM_ID**  
+  type: `str`  
+* **GITHUB_CLIENT_ID**  
+  type: `str`  
+* **GITHUB_CLIENT_SECRET**  
+  type: `str`  
+* **SENTRY_DSN**  
+  type: `str`  
+* **LISTEN**  
+  Socket for webserver to listen on.  
+  type: `str`  
+  default: `127.0.0.1:8077`  
 
 GitHub Team authentication is included by setting the relevant `GITHUB_*` variables.
 
