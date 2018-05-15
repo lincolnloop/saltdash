@@ -50,6 +50,10 @@ pip install saltdash
 webserver is included and can be started with `saltdash serve`. If Docker is
 more your speed, there's a `Dockerfile` as well.
 
+⚠️ The built-in webserver does not handle HTTPS. The default settings assume the
+app is deployed behind a proxy which is terminating HTTPS connections and
+properly handling headers. If this is not the case, [you should read this](https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header) and take appropriate actions.
+
 ### Configuration
 
 Configuration can be done via environment variables, a file, or a combination
