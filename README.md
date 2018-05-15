@@ -1,5 +1,8 @@
 ![Salt Dash logo](https://cldup.com/pjjyyptW69.png)
 
+[![tests](https://img.shields.io/circleci/project/github/lincolnloop/saltdash/master.svg)](https://circleci.com/gh/lincolnloop/saltdash/tree/master)
+[![PyPI](https://img.shields.io/pypi/v/saltdash.svg)](https://pypi.org/project/saltdash/)
+
 # Salt Dash
 
 Read-only web interface to read from Salt's [external job cache](https://docs.saltstack.com/en/latest/topics/jobs/external_cache.html) using the  [`pgjsonb`](https://docs.saltstack.com/en/latest/ref/returners/all/salt.returners.pgjsonb.html) returner.
