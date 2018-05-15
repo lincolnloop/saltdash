@@ -12,8 +12,8 @@ from saltdash.dash.models import Job
 log = logging.getLogger(__name__)
 
 EXEMPT_URLS = (
-        [compile(settings.LOGIN_URL.lstrip('/'))] +
-        [compile(expr) for expr in getattr(settings, 'LOGIN_EXEMPT_URLS', [])]
+    [compile(settings.LOGIN_URL.lstrip("/"))]
+    + [compile(expr) for expr in getattr(settings, "LOGIN_EXEMPT_URLS", [])]
 )
 
 # https://gist.github.com/agusmakmun/b71ac536124e0535a8b076989f8cfcd3
@@ -31,14 +31,17 @@ class LoginRequiredMiddleware:
     def __call__(self, request):
         # Before the view is called
         if not request.user.is_authenticated:
-            path = request.path_info.lstrip('/')
+            path = request.path_info.lstrip("/")
             if not any(m.match(path) for m in EXEMPT_URLS):
                 redirect_to = settings.LOGIN_URL
                 # Add 'next' GET variable to support redirection after login
-                if len(path) > 0 and is_safe_url(url=request.path_info,
-                                                 host=request.get_host()):
-                    redirect_to = "{}?next={}".format(settings.LOGIN_URL,
-                                                      request.path_info)
+                if (
+                    len(path) > 0
+                    and is_safe_url(url=request.path_info, host=request.get_host())
+                ):
+                    redirect_to = "{}?next={}".format(
+                        settings.LOGIN_URL, request.path_info
+                    )
                 return HttpResponseRedirect(redirect_to)
         response = self.get_response(request)
         # After the view is called
@@ -53,19 +56,16 @@ def healthcheck():
             cursor.execute("SELECT 1;")
     except Exception:
         log.exception("Database connection failed.")
-        errors.append('Database error')
+        errors.append("Database error")
     # Verify static files are reachable
-    filename = 'app.css'
+    filename = "app.css"
     if not staticfiles_storage.exists(filename):
         log.error("Can't find %s in static files.", filename)
-        errors.append('Static files error.')
+        errors.append("Static files error.")
     if errors:
-        return JsonResponse({
-            'healthy': False,
-            'errors': errors,
-        }, status=503)
+        return JsonResponse({"healthy": False, "errors": errors}, status=503)
     else:
-        return JsonResponse({'healthy': True})
+        return JsonResponse({"healthy": True})
 
 
 def healthcheck_middleware(get_response):
@@ -79,7 +79,7 @@ def healthcheck_middleware(get_response):
         if request.path == settings.HEALTHCHECK_URL:
             return healthcheck()
         elif request.path == settings.ALIVE_URL:
-            return HttpResponse('ok')
+            return HttpResponse("ok")
 
         return get_response(request)
 

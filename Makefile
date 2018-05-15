@@ -33,6 +33,10 @@ saltdash.yml: setup
 check: setup
 	pipenv run saltdash test
 
+.PHONY: fmt
+fmt:
+	black $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
+
 version := $(shell python3 setup.py --version)
 platform := $(shell python3 -c "import sysconfig as sc; print('py{}-{}'.format(sc.get_python_version().replace('.', ''), sc.get_platform()))")
 sha := $(shell git rev-parse HEAD)

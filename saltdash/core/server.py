@@ -16,12 +16,13 @@ class NonBindingServer(waitress.server.UnixWSGIServer):
     Bypass binding to the socket.
     In the case of Systemd sockets, it is already bound.
     """
+
     def bind_server_socket(self):
         pass
 
 
 def _is_systemd():
-    listen_pid = int(os.environ.get('LISTEN_PID', 0))
+    listen_pid = int(os.environ.get("LISTEN_PID", 0))
     return listen_pid == os.getpid()
 
 
@@ -30,19 +31,19 @@ def systemd_notify(msg):
     Allow app to be setup as `Type=notify` in systemd
     Sending signals when it is ready to start serving.
     """
-    if 'NOTIFY_SOCKET' not in os.environ:
-        log.debug('No systemd NOTIFY_SOCKET set')
+    if "NOTIFY_SOCKET" not in os.environ:
+        log.debug("No systemd NOTIFY_SOCKET set")
         return
     msg = codecs.latin_1_encode(msg)[0]
-    addr = os.environ['NOTIFY_SOCKET']
-    if addr[0] == '@':
-        addr = '\0' + addr[1:]
+    addr = os.environ["NOTIFY_SOCKET"]
+    if addr[0] == "@":
+        addr = "\0" + addr[1:]
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
     try:
         sock.connect(addr)
         sock.sendall(msg)
     except:
-        log.exception('Could not notify systemd')
+        log.exception("Could not notify systemd")
 
 
 def start():
@@ -51,21 +52,21 @@ def start():
     # Work with systemd socket activation
     if _is_systemd() and not config.LISTEN:
         wsgi_server = NonBindingServer(
-            logged_app,
-            _sock=socket.fromfd(3, socket.AF_UNIX, socket.SOCK_STREAM)
+            logged_app, _sock=socket.fromfd(3, socket.AF_UNIX, socket.SOCK_STREAM)
         )
-    elif config.LISTEN.startswith('/'):
-        wsgi_server = waitress.server.create_server(logged_app,
-                                                    unix_socket=config.LISTEN)
+    elif config.LISTEN.startswith("/"):
+        wsgi_server = waitress.server.create_server(
+            logged_app, unix_socket=config.LISTEN
+        )
     else:
-        wsgi_server = waitress.server.create_server(logged_app,
-                                                    listen=config.LISTEN)
+        wsgi_server = waitress.server.create_server(logged_app, listen=config.LISTEN)
     if wsgi.warmup.status_code != 200:
-        log.error("Warmup failed with status code %s. Shutting down.",
-                  wsgi.warmup.status_code)
+        log.error(
+            "Warmup failed with status code %s. Shutting down.", wsgi.warmup.status_code
+        )
         exit(1)
-    wsgi_server.print_listen('Serving on {}:{}')
-    systemd_notify('READY=1')
+    wsgi_server.print_listen("Serving on {}:{}")
+    systemd_notify("READY=1")
     wsgi_server.run()
 
 
@@ -82,17 +83,22 @@ class TransLogger(object):
     logger will be sent to the console.
     """
 
-    format = ('%(REMOTE_ADDR)s - %(REMOTE_USER)s [%(time)s] '
-              '"%(REQUEST_METHOD)s %(REQUEST_URI)s %(HTTP_VERSION)s" '
-              '%(status)s %(bytes)s "%(HTTP_REFERER)s" "%(HTTP_USER_AGENT)s"')
+    format = (
+        "%(REMOTE_ADDR)s - %(REMOTE_USER)s [%(time)s] "
+        '"%(REQUEST_METHOD)s %(REQUEST_URI)s %(HTTP_VERSION)s" '
+        '%(status)s %(bytes)s "%(HTTP_REFERER)s" "%(HTTP_USER_AGENT)s"'
+    )
 
-    def __init__(self, application,
-                 logger=None,
-                 format=None,
-                 logging_level=logging.INFO,
-                 logger_name='wsgi',
-                 setup_console_handler=True,
-                 set_logger_level=logging.DEBUG):
+    def __init__(
+        self,
+        application,
+        logger=None,
+        format=None,
+        logging_level=logging.INFO,
+        logger_name="wsgi",
+        setup_console_handler=True,
+        set_logger_level=logging.DEBUG,
+    ):
         if format is not None:
             self.format = format
         self.application = application
@@ -104,7 +110,7 @@ class TransLogger(object):
                 console = logging.StreamHandler()
                 console.setLevel(logging.DEBUG)
                 # We need to control the exact format:
-                console.setFormatter(logging.Formatter('%(message)s'))
+                console.setFormatter(logging.Formatter("%(message)s"))
                 self.logger.addHandler(console)
                 self.logger.propagate = False
             if set_logger_level is not None:
@@ -114,50 +120,51 @@ class TransLogger(object):
 
     def __call__(self, environ, start_response):
         start = time.localtime()
-        req_uri = quote(environ.get('SCRIPT_NAME', '')
-                               + environ.get('PATH_INFO', ''))
-        if environ.get('QUERY_STRING'):
-            req_uri += '?'+environ['QUERY_STRING']
-        method = environ['REQUEST_METHOD']
+        req_uri = quote(environ.get("SCRIPT_NAME", "") + environ.get("PATH_INFO", ""))
+        if environ.get("QUERY_STRING"):
+            req_uri += "?" + environ["QUERY_STRING"]
+        method = environ["REQUEST_METHOD"]
+
         def replacement_start_response(status, headers, exc_info=None):
             # @@: Ideally we would count the bytes going by if no
             # content-length header was provided; but that does add
             # some overhead, so at least for now we'll be lazy.
             bytes = None
             for name, value in headers:
-                if name.lower() == 'content-length':
+                if name.lower() == "content-length":
                     bytes = value
             self.write_log(environ, method, req_uri, start, status, bytes)
             return start_response(status, headers)
+
         return self.application(environ, replacement_start_response)
 
     def write_log(self, environ, method, req_uri, start, status, bytes):
         if bytes is None:
-            bytes = '-'
+            bytes = "-"
         if time.daylight:
-                offset = time.altzone / 60 / 60 * -100
+            offset = time.altzone / 60 / 60 * -100
         else:
-                offset = time.timezone / 60 / 60 * -100
+            offset = time.timezone / 60 / 60 * -100
         if offset >= 0:
-                offset = "+%0.4d" % (offset)
+            offset = "+%0.4d" % (offset)
         elif offset < 0:
-                offset = "%0.4d" % (offset)
-        remote_addr = '-'
-        if environ.get('HTTP_X_FORWARDED_FOR'):
-            remote_addr = environ['HTTP_X_FORWARDED_FOR']
-        elif environ.get('REMOTE_ADDR'):
-            remote_addr = environ['REMOTE_ADDR']
+            offset = "%0.4d" % (offset)
+        remote_addr = "-"
+        if environ.get("HTTP_X_FORWARDED_FOR"):
+            remote_addr = environ["HTTP_X_FORWARDED_FOR"]
+        elif environ.get("REMOTE_ADDR"):
+            remote_addr = environ["REMOTE_ADDR"]
         d = {
-            'REMOTE_ADDR': remote_addr,
-            'REMOTE_USER': environ.get('REMOTE_USER') or '-',
-            'REQUEST_METHOD': method,
-            'REQUEST_URI': req_uri,
-            'HTTP_VERSION': environ.get('SERVER_PROTOCOL'),
-            'time': time.strftime('%d/%b/%Y:%H:%M:%S ', start) + offset,
-            'status': status.split(None, 1)[0],
-            'bytes': bytes,
-            'HTTP_REFERER': environ.get('HTTP_REFERER', '-'),
-            'HTTP_USER_AGENT': environ.get('HTTP_USER_AGENT', '-'),
-            }
+            "REMOTE_ADDR": remote_addr,
+            "REMOTE_USER": environ.get("REMOTE_USER") or "-",
+            "REQUEST_METHOD": method,
+            "REQUEST_URI": req_uri,
+            "HTTP_VERSION": environ.get("SERVER_PROTOCOL"),
+            "time": time.strftime("%d/%b/%Y:%H:%M:%S ", start) + offset,
+            "status": status.split(None, 1)[0],
+            "bytes": bytes,
+            "HTTP_REFERER": environ.get("HTTP_REFERER", "-"),
+            "HTTP_USER_AGENT": environ.get("HTTP_USER_AGENT", "-"),
+        }
         message = self.format % d
         self.logger.log(self.logging_level, message)
