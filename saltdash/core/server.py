@@ -20,12 +20,6 @@ class NonBindingServer(waitress.server.UnixWSGIServer):
     def bind_server_socket(self):
         pass
 
-
-def _is_systemd():
-    listen_pid = int(os.environ.get("LISTEN_PID", 0))
-    return listen_pid == os.getpid()
-
-
 def systemd_notify(msg):
     """
     Allow app to be setup as `Type=notify` in systemd
@@ -50,7 +44,7 @@ def start():
     """Start webserver"""
     logged_app = TransLogger(wsgi.application)
     # Work with systemd socket activation
-    if _is_systemd() and not config.LISTEN:
+    if 'LISTEN_FDNAMES' in os.environ and not config.LISTEN:
         wsgi_server = NonBindingServer(
             logged_app, _sock=socket.fromfd(3, socket.AF_UNIX, socket.SOCK_STREAM)
         )
