@@ -2,6 +2,7 @@
 
 [![tests](https://img.shields.io/circleci/project/github/lincolnloop/saltdash/master.svg)](https://circleci.com/gh/lincolnloop/saltdash/tree/master)
 [![PyPI](https://img.shields.io/pypi/v/saltdash.svg)](https://pypi.org/project/saltdash/)
+![Python Versions](https://img.shields.io/pypi/pyversions/saltdash.svg)
 
 # Salt Dash
 
