@@ -20,6 +20,7 @@ class NonBindingServer(waitress.server.UnixWSGIServer):
     def bind_server_socket(self):
         pass
 
+
 def systemd_notify(msg):
     """
     Allow app to be setup as `Type=notify` in systemd
@@ -44,7 +45,7 @@ def start():
     """Start webserver"""
     logged_app = TransLogger(wsgi.application)
     # Work with systemd socket activation
-    if 'LISTEN_FDNAMES' in os.environ and not config.LISTEN:
+    if "LISTEN_FDNAMES" in os.environ and not config.LISTEN:
         wsgi_server = NonBindingServer(
             logged_app, _sock=socket.fromfd(3, socket.AF_UNIX, socket.SOCK_STREAM)
         )
@@ -52,8 +53,10 @@ def start():
         wsgi_server = waitress.server.create_server(
             logged_app, unix_socket=config.LISTEN
         )
-    else:
+    elif config.LISTEN:
         wsgi_server = waitress.server.create_server(logged_app, listen=config.LISTEN)
+    else:
+        raise RuntimeError("No socket to listen on. `LISTEN` config value is empty.")
     if wsgi.warmup.status_code != 200:
         log.error(
             "Warmup failed with status code %s. Shutting down.", wsgi.warmup.status_code
