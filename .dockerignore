@@ -3,6 +3,9 @@
 /client/.cache
 /client/dist
 /saltdash/static
+/saltdash/libuwsgi.so
+/build
+/dist
 /db.sqlite3
 *.egg-info
 *.sql

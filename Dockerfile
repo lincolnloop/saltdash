@@ -15,7 +15,10 @@ RUN cd /code && make shiv
 
 FROM python:3.6-slim
 COPY --from=build /code/dist /dist
-RUN groupadd -r saltdash && \
+RUN set -ex && \
+    apt-get update -q && apt-get install -y --no-install-recommends mime-support libxml2 && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -r saltdash && \
     useradd --uid=1000 --create-home --home-dir=/srv/saltdash --no-log-init -r -g saltdash saltdash && \
     ln -s /dist/*.pyz /bin/saltdash && chmod +x /dist/*.pyz
 
@@ -31,5 +34,5 @@ WORKDIR /srv/saltdash
 EXPOSE 8077
 ENV LISTEN *:8077
 VOLUME /etc/saltdash/
-# Run tests with `pytest`
-CMD /bin/saltdash serve
+ENTRYPOINT ["/bin/saltdash"]
+CMD ["serve"]
