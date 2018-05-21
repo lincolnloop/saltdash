@@ -66,7 +66,7 @@ dist/saltdash-$(version)+$(sha)-$(platform).pyz: all saltdash/libuwsgi.so | dist
 shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz
 
 saltdash/libuwsgi.so:
-	UWSGI_AS_LIB=$(shell pwd)/$@ pip install --no-cache-dir --ignore-installed uwsgi
+	UWSGI_AS_LIB=$(shell pwd)/$@ UWSGI_EMBED_PLUGINS=stats_pusher_statsd pip install --no-cache-dir --ignore-installed uwsgi
 
 .PHONY: uwsgi
 ## Install uWSGI as a library for use with `saltdash uwsgi`
