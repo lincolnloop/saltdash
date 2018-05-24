@@ -1,7 +1,9 @@
+import fnmatch
 import json
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.conf import settings
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.functional import cached_property
@@ -145,6 +147,9 @@ class Result(models.Model):
 
     @property
     def result_type(self) -> str:
+        for hidden in settings.HIDE_OUTPUT:
+            if fnmatch.fnmatch(self.full_ret.get("fun", ""), hidden):
+                return "hidden"
         if isinstance(self.return_val, dict):
             if self.return_val.get("fun") == "runner.state.orchestrate":
                 return "orchestrate"

@@ -76,6 +76,10 @@ uwsgi: saltdash/libuwsgi.so
 ## Full project install
 all: setup saltdash/static
 
+.PHONY: release
+release: clean all
+	pipenv run twine upload -s dist/*
+
 .PHONY: clean
 ## Remove all generated files
 clean:

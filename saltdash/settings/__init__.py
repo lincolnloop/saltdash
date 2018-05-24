@@ -177,3 +177,5 @@ if (
     )
     # If Github is not setup, don't require login
     MIDDLEWARE.remove("saltdash.core.middleware.LoginRequiredMiddleware")
+
+HIDE_OUTPUT = config.HIDE_OUTPUT

@@ -44,7 +44,7 @@ jobs:
               aws s3 cp latest s3://${S3_PLATTER_BUCKET}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/latest
 
       - save_cache:
-          key: deploy
+          key: deploy-{{ epoch }}
           paths:
             - "/root/.cache/pip"
 
