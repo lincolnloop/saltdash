@@ -21,6 +21,9 @@ class Config(GoodConf):
         "site "
         "https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts",
     )
+    HIDE_OUTPUT = Value(
+        default=['pillar.*'],
+        help="List of modules to hide the output from in the web interface.")
     GITHUB_TEAM_ID = Value(default="")
     GITHUB_CLIENT_ID = Value(default="")
     GITHUB_CLIENT_SECRET = Value(default="")

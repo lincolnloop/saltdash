@@ -76,6 +76,10 @@ containing the following variables:
   Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts  
   type: `list`  
   default: `['*']`  
+* **HIDE_OUTPUT**  
+  List of modules to hide the output from in the web interface.  
+  type: `list`  
+  default: `['pillar.*']`
 * **GITHUB_TEAM_ID**  
   type: `str`  
 * **GITHUB_CLIENT_ID**  
@@ -123,6 +127,23 @@ saltdash purge_job_cache [days_older_than_to_purge]
 ```
 
 If you want to automate this, use the `--no-input` flag to bypass the confirmation prompt.
+
+## Protecting Secrets
+
+It is very easy to accidentally expose secrets in Salt via the logs and/or
+console output. The same applies for Saltdash. Since secrets are often stored
+in encrypted pillar data, by default the output from any `pillar.*` calls is
+hidden via the `HIDE_OUTPUT` setting. If you have additional modules you know
+expose secret data, they should be added to the list.
+
+There are many other ways secrets can leak, however. A few general tips (which
+are good practice whether you use Saltdash or not).
+
+* Set `show_changes: false` on any `file.*` actions which deal with sensitive data.
+* Set `hide_output: true` on any `cmd.*` state which may output sensitive data.
+* When working with files, use templates or `pillar_contents` when appropriate.
+* Avoid passing secrets as arguments to modules or states. Typically Salt can
+  read them from a pillar or config instead.
 
 ## Attributions
 
