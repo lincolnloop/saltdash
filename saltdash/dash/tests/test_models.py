@@ -19,10 +19,10 @@ class ModelTestCase(TestCase):
         job = Job(load={"tgt": "minion*", "tgt_type": "glob"})
         self.assertListEqual(job.targets, ["minion*"])
 
-    @override_settings(HIDE_OUTPUT=['pillar.*'])
+    @override_settings(HIDE_OUTPUT=["pillar.*"])
     def test_hidden_output(self):
-        result = mommy.prepare(Result, full_ret={'fun': 'pillar.get'})
-        self.assertEqual(result.result_type, 'hidden')
+        result = mommy.prepare(Result, full_ret={"fun": "pillar.get"})
+        self.assertEqual(result.result_type, "hidden")
 
-        result = mommy.prepare(Result, full_ret={'fun': 'state.sls'})
-        self.assertNotEqual(result.result_type, 'hidden')
+        result = mommy.prepare(Result, full_ret={"fun": "state.sls"})
+        self.assertNotEqual(result.result_type, "hidden")

@@ -149,7 +149,7 @@ class Result(models.Model):
     def result_type(self) -> str:
         for hidden in settings.HIDE_OUTPUT:
             if fnmatch.fnmatch(self.full_ret.get("fun", ""), hidden):
-                return 'hidden'
+                return "hidden"
         if isinstance(self.return_val, dict):
             if self.return_val.get("fun") == "runner.state.orchestrate":
                 return "orchestrate"
