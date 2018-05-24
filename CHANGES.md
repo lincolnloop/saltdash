@@ -1,9 +1,9 @@
 # Changelog
 
-0.9.5 (unreleased)
+0.9.5 (2018-05-24)
 ------------------
 
-- Nothing changed yet.
+- Adds `HIDE_OUTPUT` config to prevent showing secrets in web interface
 
 
 0.9.4 (2018-05-15)
