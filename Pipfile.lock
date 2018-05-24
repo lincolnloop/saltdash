@@ -124,13 +124,20 @@
             ],
             "version": "==2.6"
         },
+        "model-mommy": {
+            "hashes": [
+                "sha256:a8c036ea9fc9ef3ac433d9de1cb09ca73e0a5d5f344d6d219a28efd4adfb3cd4",
+                "sha256:ca5d55e0904753fbcd8e59df8dbbcb409eeb4c30f91de5299254f17e00cc87f0"
+            ],
+            "version": "==1.5.1"
+        },
         "more-itertools": {
             "hashes": [
-                "sha256:0dd8f72eeab0d2c3bd489025bb2f6a1b8342f9b198f6fc37b52d15cfa4531fea",
-                "sha256:11a625025954c20145b37ff6309cd54e39ca94f72f6bb9576d1195db6fa2442e",
-                "sha256:c9ce7eccdcb901a2c75d326ea134e0886abfbea5f93e91cc95de9507c0816c44"
+                "sha256:2b6b9893337bfd9166bee6a62c2b0c9fe7735dcf85948b387ec8cba30e85d8e8",
+                "sha256:6703844a52d3588f951883005efcf555e49566a48afd4db4e965d69b883980d3",
+                "sha256:a18d870ef2ffca2b8463c0070ad17b5978056f403fb64e3f15fe62a52db21cc0"
             ],
-            "version": "==4.1.0"
+            "version": "==4.2.0"
         },
         "oauthlib": {
             "hashes": [
@@ -188,10 +195,10 @@
         },
         "pyjwt": {
             "hashes": [
-                "sha256:c365c2c92063bdc609a9ef328958a910e249ffcad953895914b87e645412cf81",
-                "sha256:d527c3330d83d7278a0a8ef570b7c9c39fbf2c0c1edbe564a1a8a02d5352322b"
+                "sha256:30b1380ff43b55441283cc2b2676b755cca45693ae3097325dea01f3d110628c",
+                "sha256:4ee413b357d53fd3fb44704577afac88e72e878716116270d722723d65b42176"
             ],
-            "version": "==1.6.3"
+            "version": "==1.6.4"
         },
         "pytest": {
             "hashes": [
