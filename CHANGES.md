@@ -1,5 +1,11 @@
 # Changelog
 
+0.9.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 0.9.5 (2018-05-24)
 ------------------
 
