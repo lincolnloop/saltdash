@@ -53,6 +53,10 @@ shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz
 .PHONY: all
 all: setup saltdash/static
 
+.PHONY: release
+release: clean all
+	pipenv run twine upload -s dist/*
+
 .PHONY: clean
 clean:
 	rm -rf client/{node_modules,dist}
