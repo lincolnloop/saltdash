@@ -188,10 +188,10 @@
         },
         "pyjwt": {
             "hashes": [
-                "sha256:c365c2c92063bdc609a9ef328958a910e249ffcad953895914b87e645412cf81",
-                "sha256:d527c3330d83d7278a0a8ef570b7c9c39fbf2c0c1edbe564a1a8a02d5352322b"
+                "sha256:30b1380ff43b55441283cc2b2676b755cca45693ae3097325dea01f3d110628c",
+                "sha256:4ee413b357d53fd3fb44704577afac88e72e878716116270d722723d65b42176"
             ],
-            "version": "==1.6.3"
+            "version": "==1.6.4"
         },
         "pytest": {
             "hashes": [
