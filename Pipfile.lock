@@ -442,11 +442,11 @@
         },
         "prompt-toolkit": {
             "hashes": [
-                "sha256:1df952620eccb399c53ebb359cc7d9a8d3a9538cb34c5a1344bdbeb29fbcc381",
-                "sha256:3f473ae040ddaa52b52f97f6b4a493cfa9f5920c255a12dc56a7d34397a398a4",
-                "sha256:858588f1983ca497f1cf4ffde01d978a3ea02b01c8a26a8bbc5cd2e66d816917"
+                "sha256:2e684ce7278eefb2eb6715e026169031376b60711eb62b3faf1f0d21f158280f",
+                "sha256:12e671b1faea1cdcb60a9f58454a7b8dbffb3a0fd3bcf395c4b5436b30b59710",
+                "sha256:d9ea14304a2633e4b40dde874c63da6b94a075f61e837011e035ffcd5bb39a1d"
             ],
-            "version": "==1.0.15"
+            "version": "==2.0.3"
         },
         "ptyprocess": {
             "hashes": [
