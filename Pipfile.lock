@@ -534,11 +534,10 @@
         },
         "zest.releaser": {
             "hashes": [
-                "sha256:9a2869a235147c1f0965e82403dddb92d30a13467e3b4654f1f6fbcfccef11b5",
-                "sha256:b536f6f4e3473210bbaf2550165b33af4545606d654f54ffbafe2d0d1f8f96f4"
+                "sha256:4c40d7b3b4cb647be9d3a9e0e4e5d6fad9943e624186e4cdb600ad745617ab55",
+                "sha256:fdb0f33e9d841df0e3a450c2906c1649a5191815ab0befc8cc6c78989ff358c3"
             ],
-            "index": "pypi",
-            "version": "==6.15.0"
+            "version": "==6.15.1"
         }
     }
 }
