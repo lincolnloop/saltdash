@@ -112,10 +112,10 @@
         },
         "goodconf": {
             "hashes": [
-                "sha256:384f179f9eb7842884b344f0f859141056962d847bcd11fd216328649c54909e",
-                "sha256:828fed415873da26bee78d518ce3a26936d80d61a600f8c3ccabc172cb90e843"
+                "sha256:beb2f9ed734015e1becd4338d8b1e363cf51fb52e2f794f4e85e8c59d097442e",
+                "sha256:2c33460b4d9859ffacff32355b7effb1a922a16c1d54e8edd6452503bd8e809b"
             ],
-            "version": "==0.9.1"
+            "version": "==1.0.0"
         },
         "idna": {
             "hashes": [
