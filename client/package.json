@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
-    "postinstall": "yarn run build",
+    "postinstall": "test -n \"$NOYARNBUILD\" || yarn run build",
     "build": "yarn run build:css && yarn run build:js && yarn run build:assets",
     "build:css": "parcel build scss/app.scss",
     "build:js": "parcel build js/app.js",

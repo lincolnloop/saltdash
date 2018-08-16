@@ -1,0 +1,30 @@
+[Unit]
+Description=Saltdash
+After=syslog.target
+
+[Service]
+Environment=SHIV_ROOT=/var/cache/saltdash
+Environment=SECRET_KEY=k
+Environment=DATABASE_URL=postgres://postgres:password@postgres/saltdash_prod
+ExecStartPre=/bin/sh -c "echo 'Cleaning package cache...' && \
+            ls -1td ${SHIV_ROOT}/* | tail -n +4 | xargs -d '\n' -r rm -rf --"
+ExecStart=/srv/saltdash/saltdash-0.1.pyz serve
+Restart=on-failure
+WorkingDirectory=/srv/saltdash
+Type=notify
+DynamicUser=true
+
+# sandboxing
+ProtectSystem=strict
+CacheDirectory=saltdash
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+PrivateDevices=true
+PrivateTmp=true
+SystemCallArchitectures=native
+SystemCallFilter=~@mount
+
+[Install]
+WantedBy=multi-user.target

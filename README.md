@@ -1,5 +1,9 @@
 ![Salt Dash logo](https://cldup.com/pjjyyptW69.png)
 
+[![tests](https://img.shields.io/circleci/project/github/lincolnloop/saltdash/master.svg)](https://circleci.com/gh/lincolnloop/saltdash/tree/master)
+[![PyPI](https://img.shields.io/pypi/v/saltdash.svg)](https://pypi.org/project/saltdash/)
+![Python Versions](https://img.shields.io/pypi/pyversions/saltdash.svg)
+
 # Salt Dash
 
 Read-only web interface to read from Salt's [external job cache](https://docs.saltstack.com/en/latest/topics/jobs/external_cache.html) using the  [`pgjsonb`](https://docs.saltstack.com/en/latest/ref/returners/all/salt.returners.pgjsonb.html) returner.
@@ -7,24 +11,29 @@ Read-only web interface to read from Salt's [external job cache](https://docs.sa
 ![screenshot](https://cldup.com/8TTHBPfhyu.png)
 
 
-## Running Locally
+## Development
 
-Install [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
+### Pre-requisites
 
-Install [Pipenv](https://docs.pipenv.org/) for the back-end.
+* [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
+* [Poetry](https://poetry.eustace.io/) for the back-end.
+* A Postgresql database
+
+### Installation
 
 ```bash
-(cd client; yarn)
-pipenv --three install --dev
-$EDITOR config.yml  # if necessary
-pipenv shell
-saltdash migrate
-saltdash runserver
+git clone git@github.com:lincolnloop/saltdash.git
+cd saltdash
+make all              # download dependencies and build the world
+$EDITOR saltdash.yml  # change settings as needed
+poetry shell          # activate the Python virtual environment
+saltdash migrate      # setup the database
+saltdash runserver    # run a development server
 ```
 
-## Client-side Development
+### Client-side
 
-Currently using [parcel](https://parceljs.org/). To start a development environment with live reloading, run:
+Uses [parcel](https://parceljs.org/). To start a development environment with live reloading, run:
 
 ```bash
 cd client
@@ -33,24 +42,56 @@ yarn run watch
 
 ## Running in Production
 
-`saltdash runserver` is not suitable for production. [Gunicorn](http://gunicorn.org/) is included and can be run via `gunicorn saltdash.wsgi:application` If Docker is more your speed, there's a `Dockerfile` as well.
+```bash
+pip install saltdash
+```
 
-Your environment should include the following variables (alternatively, you can define them in `config.yml`):
+`saltdash runserver` is not suitable for production. A production-level
+webserver is included and can be started with `saltdash serve`. If Docker is
+more your speed, there's a `Dockerfile` as well.
 
-### Required
+⚠️ The built-in webserver does not handle HTTPS. The default settings assume the
+app is deployed behind a proxy which is terminating HTTPS connections and
+properly handling headers. If this is not the case, [you should read this](https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header) and take appropriate actions.
 
-* `SECRET_KEY`: a long random string you keep secret ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key))
-* `DATABASE_URL`: `postgres://USER:PASSWORD@HOST:PORT/NAME`
+### Configuration
 
+Configuration can be done via environment variables, a file, or a combination
+of both thanks to [`Goodconf`](https://pypi.org/project/goodconf/). By default
+it will look for a YAML file named `saltdash.yml` in `/etc/saltdash/` or the current
+directory. You can also specify a configuration file with the `-C` or `--config`
+flags. `saltdash-generate-config` can be used to generate a sample config file
+containing the following variables:
 
-### Optional
-
-* `DEBUG`: `True` (never in production)
-* `ALLOWED_HOSTS`: a comma-separated list of hosts allowed to serve the site ([docs](https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts))
-* `GITHUB_TEAM_ID`: ID from the list provided by the `curl` command below
-* `GITHUB_CLIENT_ID`: OAuth Client ID
-* `GITHUB_CLIENT_SECRET`: OAuth Client Secret
-* `SENTRY_DSN`: For error reporting to [Sentry](https://sentry.io)
+* **DEBUG**  
+  Enable debugging.  
+  type: `bool`  
+* **SECRET_KEY**  _REQUIRED_  
+  a long random string you keep secret https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key  
+  type: `str`  
+* **DATABASE_URL**  
+  type: `str`  
+  default: `postgres://localhost:5432/salt`  
+* **ALLOWED_HOSTS**  
+  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts  
+  type: `list`  
+  default: `['*']`  
+* **HIDE_OUTPUT**  
+  List of modules to hide the output from in the web interface.  
+  type: `list`  
+  default: `['pillar.*']`
+* **GITHUB_TEAM_ID**  
+  type: `str`  
+* **GITHUB_CLIENT_ID**  
+  type: `str`  
+* **GITHUB_CLIENT_SECRET**  
+  type: `str`  
+* **SENTRY_DSN**  
+  type: `str`  
+* **LISTEN**  
+  Socket for webserver to listen on.  
+  type: `str`  
+  default: `127.0.0.1:8077`  
 
 GitHub Team authentication is included by setting the relevant `GITHUB_*` variables.
 
@@ -86,6 +127,23 @@ saltdash purge_job_cache [days_older_than_to_purge]
 ```
 
 If you want to automate this, use the `--no-input` flag to bypass the confirmation prompt.
+
+## Protecting Secrets
+
+It is very easy to accidentally expose secrets in Salt via the logs and/or
+console output. The same applies for Saltdash. Since secrets are often stored
+in encrypted pillar data, by default the output from any `pillar.*` calls is
+hidden via the `HIDE_OUTPUT` setting. If you have additional modules you know
+expose secret data, they should be added to the list.
+
+There are many other ways secrets can leak, however. A few general tips (which
+are good practice whether you use Saltdash or not).
+
+* Set `show_changes: false` on any `file.*` actions which deal with sensitive data.
+* Set `hide_output: true` on any `cmd.*` state which may output sensitive data.
+* When working with files, use templates or `pillar_contents` when appropriate.
+* Avoid passing secrets as arguments to modules or states. Typically Salt can
+  read them from a pillar or config instead.
 
 ## Attributions
 

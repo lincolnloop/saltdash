@@ -10,5 +10,7 @@
 /.env
 /.docker-env
 Dockerfile
+pyproject.log
+/dist
 .DS_Store
 .idea

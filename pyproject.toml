@@ -7,33 +7,23 @@ authors = ["Peter Baumgartner <pete@lincolnloop.com>"]
 homepage = "https://github.com/lincolnloop/saltdash/"
 keywords = ["salt", "dashboard"]
 license = "MIT"
-
-[saltdash]
 include = ["saltdash/templates/**/*", "saltdash/static/**/*"]
 
-[tool.platter.dependencies]
-django = "~2.0"
-dj-database-url = "~0.5"
-goodconf = {version="<1.0", extras=["yaml"]}
-psycopg2-binary = "~2.7"
-python-json-logger = "0.1.8"
-raven = "~6.6"
-social-auth-app-django = "~2.1"
-pytest-cov = "~2.5"
-pytest-django = "~3.1"
-gunicorn = "~19.7"
-whitenoise = "~3.3"
+[tool.poetry.dependencies]
+django = "2.0.7"
+dj-database-url = "0.5.0"
+goodconf = {version = "~1.0", extras = ["yaml"]}
+"psycopg2-binary" = "2.7.5"
+python-json-logger = "0.1.9"
+raven = "6.9.0"
+social-auth-app-django = "2.1.0"
+pytest-cov = "2.5.1"
+pytest-django = "3.3.2"
+model-mommy = "1.6.0"
+waitress = "1.1.0"
+whitenoise = "~4.0"
 
-
-[tool.platter]
-python = "python3.6"
-prebuild-script = """
-set -eufx
-cd $SOURCE_DIR/client
-yarn install --production
-cd $SOURCE_DIR
-cp setup.cfg $DATA_DIR
-pipenv install --deploy
-export SECRET_KEY=secret
-pipenv run manage.py collectstatic --noinput
-"""
+[tool.poetry.scripts]
+saltdash = "saltdash:config.django_manage"
+manage.py = "saltdash:config.django_manage"
+saltdash-generate-config = "saltdash:generate_config"
