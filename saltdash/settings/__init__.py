@@ -63,11 +63,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "saltdash.healtcheck.middleware.healthcheck_bypass_host_check",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # common middleware does ALLOWED_HOSTS check. healthcheck must be before
-    "saltdash.core.middleware.healthcheck_middleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
