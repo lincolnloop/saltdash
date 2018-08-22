@@ -2,7 +2,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
+from saltdash.healtcheck.urls import urlpatterns as healtcheck_urlpatterns
+
+urlpatterns = healtcheck_urlpatterns + [
     path("-/", include("saltdash.healtcheck.urls")),
     path("admin/", admin.site.urls),
     path(
