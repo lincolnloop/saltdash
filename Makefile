@@ -44,7 +44,7 @@ sha := $(shell git rev-parse HEAD)
 dist:
 	mkdir $@
 
-dist/saltdash-$(version)+$(sha)-$(platform).pyz: all | dist
+dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
 	shiv -e saltdash:config.django_manage -o $@ .
 
 .PHONY: shiv

@@ -1,26 +1,33 @@
-FROM python:3.6 as build
+FROM node:8-alpine as build-node
+
+WORKDIR /code
+RUN apk --no-cache add make rsync bash
+COPY Makefile ./
+COPY client/package.json client/yarn.lock ./client/
+RUN npm install -g yarn@latest && \
+    make client-install
+
+COPY client/ ./client
+RUN make client-build
+
+FROM python:3.6 as build-python
 ENV LANG C.UTF-8
 
 ENV PATH="/root/.local/bin:${PATH}"
+WORKDIR /code
 RUN pip3 install --user pipenv shiv
-RUN set -ex && \
-    apt-get update -q && apt-get install -y lsb-release apt-transport-https rsync && \
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
-    curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo "deb https://deb.nodesource.com/node_8.x $(lsb_release -s -c) main" > /etc/apt/sources.list.d/nodesource.list && \
-    apt-get update -q && apt-get install -y yarn nodejs
-ADD . /code
-RUN cd /code && make shiv
+ADD . ./
+COPY --from=build-node /code/client/dist/ ./client/dist
+RUN set -ex && make setup && SECRET_KEY=s pipenv run saltdash collectstatic --noinput && make shiv
 
 FROM python:3.6-slim
-COPY --from=build /code/dist /dist
+COPY --from=build-python /code/dist /dist
 RUN groupadd -r saltdash && \
     useradd --uid=1000 --create-home --home-dir=/srv/saltdash --no-log-init -r -g saltdash saltdash && \
     ln -s /dist/*.pyz /bin/saltdash && chmod +x /dist/*.pyz
 
 # Test reqs if you want that
-COPY --from=build /code/setup.cfg /srv/saltdash/setup.cfg
+COPY --from=build-python /code/setup.cfg /srv/saltdash/setup.cfg
 
 USER saltdash
 
