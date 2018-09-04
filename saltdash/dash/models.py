@@ -1,9 +1,9 @@
 import fnmatch
 import json
 
-from django.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField, JSONField
+from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.functional import cached_property
@@ -73,7 +73,6 @@ class Job(models.Model):
 
 
 class ResultQuerySet(models.QuerySet):
-
     def successes(self):
         return self.filter(
             Q(full_ret__contains={"retcode": 0})

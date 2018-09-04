@@ -1,13 +1,13 @@
 from django.conf import settings
-from django.core.paginator import Paginator, Page, InvalidPage
+from django.core.paginator import InvalidPage, Page, Paginator
 from django.db.models import QuerySet
 from django.http import (
-    HttpResponseRedirect,
     Http404,
-    HttpResponsePermanentRedirect,
     HttpRequest,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
 )
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .models import Job, Result

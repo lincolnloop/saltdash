@@ -1,4 +1,5 @@
 import os
+
 from django.utils.log import DEFAULT_LOGGING
 
 LOGLEVEL = os.getenv("LOGLEVEL", "info").upper()

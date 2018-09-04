@@ -1,11 +1,9 @@
 from django.test import TestCase, override_settings
 from model_mommy import mommy
-
 from saltdash.dash.models import Job, Result
 
 
 class ModelTestCase(TestCase):
-
     def test_list_targets_not_list(self):
         # lxc.list returns non-list results of type 'list' :(
         job = Job(load={"tgt": "minion", "tgt_type": "list"})

@@ -32,9 +32,7 @@ class Command(BaseCommand):
         results = models.Result.objects.filter(completed__lt=before)
         jobs = models.Job.objects.annotate(
             date=Func(F("jid"), Value("YYYYMMDDHH24MISSMS"), function="TO_TIMESTAMP")
-        ).filter(
-            date__lt=before
-        )
+        ).filter(date__lt=before)
         self.stdout.write(
             self.style.WARNING(
                 "Deleting {} jobs and {} results created before {}.".format(

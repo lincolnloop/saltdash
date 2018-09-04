@@ -8,6 +8,7 @@ ipython = "*"
 ipdb = "*"
 readable-log-formatter = "*"
 "zest.releaser" = "*"
+isort = "*"
 
 [packages]
 "e1839a8" = {path = ".", editable = true}

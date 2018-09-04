@@ -35,6 +35,7 @@ check: setup
 
 .PHONY: fmt
 fmt:
+	isort -m=3 --trailing-comma --line-width=88 --atomic $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 	black $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 
 version := $(shell python3 setup.py --version)

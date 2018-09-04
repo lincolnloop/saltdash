@@ -8,6 +8,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "saltdash.settings")
 
 class Config(GoodConf):
     """Configuration for saltdash"""
+
     DEBUG = Value(default=False, help="Enable debugging.")
     SECRET_KEY = Value(
         initial=lambda: base64.b64encode(os.urandom(60)).decode(),

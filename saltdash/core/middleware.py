@@ -7,10 +7,9 @@ from django.utils.http import is_safe_url
 
 log = logging.getLogger(__name__)
 
-EXEMPT_URLS = (
-    [compile(settings.LOGIN_URL.lstrip("/"))]
-    + [compile(expr) for expr in getattr(settings, "LOGIN_EXEMPT_URLS", [])]
-)
+EXEMPT_URLS = [compile(settings.LOGIN_URL.lstrip("/"))] + [
+    compile(expr) for expr in getattr(settings, "LOGIN_EXEMPT_URLS", [])
+]
 
 # https://gist.github.com/agusmakmun/b71ac536124e0535a8b076989f8cfcd3
 class LoginRequiredMiddleware:
@@ -31,9 +30,8 @@ class LoginRequiredMiddleware:
             if not any(m.match(path) for m in EXEMPT_URLS):
                 redirect_to = settings.LOGIN_URL
                 # Add 'next' GET variable to support redirection after login
-                if (
-                    len(path) > 0
-                    and is_safe_url(url=request.path_info, host=request.get_host())
+                if len(path) > 0 and is_safe_url(
+                    url=request.path_info, host=request.get_host()
                 ):
                     redirect_to = "{}?next={}".format(
                         settings.LOGIN_URL, request.path_info
