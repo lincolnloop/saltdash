@@ -4,8 +4,7 @@ WORKDIR /code
 RUN apk --no-cache add make rsync bash
 COPY Makefile ./
 COPY client/package.json client/yarn.lock ./client/
-RUN npm install -g yarn@latest && \
-    make client-install
+RUN make client-install
 
 COPY client/ ./client
 RUN make client-build
