@@ -99,10 +99,10 @@
         },
         "django": {
             "hashes": [
-                "sha256:97886b8a13bbc33bfeba2ff133035d3eca014e2309dff2b6da0bdfc0b8656613",
-                "sha256:e900b73beee8977c7b887d90c6c57d68af10066b9dac898e1eaf0f82313de334"
+                "sha256:acdcc1f61fdb0a0c82a1d3bf1879a414e7732ea894a7632af7f6d66ec7ab5bb3",
+                "sha256:efbcad7ebb47daafbcead109b38a5bd519a3c3cd92c6ed0f691ff97fcdd16b45"
             ],
-            "version": "==2.0.7"
+            "version": "==2.1.2"
         },
         "e1839a8": {
             "editable": true,
