@@ -46,7 +46,9 @@ dist:
 	mkdir $@
 
 dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
-	shiv -e saltdash:config.django_manage -o $@ .
+	shiv -e saltdash:config.django_manage -o $@ \
+		 --site-packages=$(shell pipenv --venv)/lib/python3.6/site-packages \
+		 --no-deps .
 
 .PHONY: shiv
 shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz
@@ -62,4 +64,4 @@ release: clean all
 clean:
 	rm -rf client/{node_modules,dist}
 	rm -rf saltdash/static dist saltdash.egg-info Pipfile.log
-	pipenv --venv && rm -rf $(shell pipenv --venv) || true
+	pipenv --rm || true
