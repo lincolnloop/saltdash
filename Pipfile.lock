@@ -102,6 +102,13 @@
             ],
             "version": "==2.2"
         },
+        "django-alive": {
+            "hashes": [
+                "sha256:38627f71d08fa096fbb7a95932af16af3996681147d2af29af0acbe94bc71288",
+                "sha256:736101cb61079390af6fcef6541ccd2dab2d9cbf7a63cf50fec9d81c2c879152"
+            ],
+            "version": "==1.0.1"
+        },
         "e1839a8": {
             "editable": true,
             "path": "."

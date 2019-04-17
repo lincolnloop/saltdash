@@ -49,6 +49,13 @@ DEBUG = config.DEBUG
 
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_REDIRECT_EXEMPT = [r"^-/"]  # django-alive URLs
+ALIVE_CHECKS = {
+    "django_alive.checks.check_database": {},
+    "django_alive.checks.check_staticfile": {
+        "filename": "app.css",
+    },
+}
 
 
 # Application definition
@@ -65,7 +72,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "saltdash.healtcheck.middleware.healthcheck_bypass_host_check",
+    "django_alive.middleware.healthcheck_bypass_host_check",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -78,8 +85,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "saltdash.urls"
-HEALTHCHECK_URL = "/-/health/"
-ALIVE_URL = "/-/alive/"
 
 TEMPLATES = [
     {
