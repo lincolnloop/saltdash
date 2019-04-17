@@ -1,6 +1,6 @@
 # Changelog
 
-0.9.6 (unreleased)
+0.9.6 (2019-04-17)
 ------------------
 
 - Dependency updates
