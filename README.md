@@ -52,7 +52,7 @@ more your speed, there's a `Dockerfile` as well.
 
 ⚠️ The built-in webserver does not handle HTTPS. The default settings assume the
 app is deployed behind a proxy which is terminating HTTPS connections and
-properly handling headers. If this is not the case, [you should read this](https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header) and take appropriate actions.
+properly handling headers. If this is not the case, [you should read this](https://docs.djangoproject.com/en/2.2/ref/settings/#secure-proxy-ssl-header) and take appropriate actions.
 
 ### Configuration
 
@@ -67,13 +67,13 @@ containing the following variables:
   Enable debugging.  
   type: `bool`  
 * **SECRET_KEY**  _REQUIRED_  
-  a long random string you keep secret https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key  
+  a long random string you keep secret https://docs.djangoproject.com/en/2.2/ref/settings/#secret-key  
   type: `str`  
 * **DATABASE_URL**  
   type: `str`  
   default: `postgres://localhost:5432/salt`  
 * **ALLOWED_HOSTS**  
-  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts  
+  Hosts allowed to serve the site https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts  
   type: `list`  
   default: `['*']`  
 * **HIDE_OUTPUT**  
