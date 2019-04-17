@@ -20,6 +20,12 @@ from django.urls import reverse_lazy
 from saltdash import config
 
 config.load()
+
+if config.SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(config.SENTRY_DSN, integrations=[DjangoIntegration()])
+
 from ._logging import LOGGING
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -57,7 +63,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "raven.contrib.django.raven_compat",
     "social_django",
     "saltdash.dash",
 ]
@@ -130,8 +135,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-RAVEN_CONFIG = {"dsn": config.SENTRY_DSN}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

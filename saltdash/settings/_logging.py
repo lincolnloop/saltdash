@@ -36,19 +36,14 @@ LOGGING = {
     "handlers": {
         # console logs to stderr
         "console": {"class": "logging.StreamHandler", "formatter": "default"},
-        # Add Handler for Sentry for `warning` and above
-        "sentry": {
-            "level": "WARNING",
-            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
-        },
     },
     "loggers": {
         # default for all undefined Python modules
-        "": {"level": "WARNING", "handlers": ["console", "sentry"]},
+        "": {"level": "WARNING", "handlers": ["console"]},
         # Our application code
         "saltdash": {
             "level": LOGLEVEL,
-            "handlers": ["console", "sentry"],
+            "handlers": ["console"],
             # Avoid double logging because of root logger
             "propagate": False,
         },
