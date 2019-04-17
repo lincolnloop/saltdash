@@ -3,7 +3,7 @@
 0.9.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Dependency updates
 
 
 0.9.5 (2018-05-24)
