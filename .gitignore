@@ -6,6 +6,6 @@ node_modules
 /client/.cache
 /client/dist
 /saltdash/static
-pyproject.log
+poetry.log
 /dist
 /build

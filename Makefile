@@ -20,11 +20,11 @@ saltdash/static: client-build
 
 # Make will use the log file to determine if it is newer than poetry.lock
 # and this should be rerun.
-pyproject.log: poetry.lock
+poetry.log: poetry.lock
 	poetry install | tee $@
 
 .PHONY: setup
-setup: pyproject.log
+setup: poetry.log
 
 saltdash.yml: setup
 	poetry run saltdash-generate-config > $@
@@ -61,5 +61,5 @@ release: clean all
 .PHONY: clean
 clean:
 	rm -rf client/{node_modules,dist}
-	rm -rf saltdash/static dist pyproject.log
+	rm -rf saltdash/static dist poetry.log
 	# poetry env remove
