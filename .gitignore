@@ -8,3 +8,4 @@ node_modules
 /saltdash/static
 pyproject.log
 /dist
+/build

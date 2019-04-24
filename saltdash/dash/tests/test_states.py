@@ -6,7 +6,6 @@ from ..models import Result, _convert_state
 
 
 class StateTestCase(TestCase):
-
     def test_requisite_state(self):
         key = "service_|-saltdash_uwsgi_|-saltdash_uwsgi_|-running"
         state_raw = {

@@ -8,18 +8,19 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "saltdash.settings")
 
 class Config(GoodConf):
     """Configuration for saltdash"""
+
     DEBUG = Value(default=False, help="Enable debugging.")
     SECRET_KEY = Value(
         initial=lambda: base64.b64encode(os.urandom(60)).decode(),
         help="a long random string you keep secret "
-        "https://docs.djangoproject.com/en/2.0/ref/settings/#secret-key",
+        "https://docs.djangoproject.com/en/2.2/ref/settings/#secret-key",
     )
     DATABASE_URL = Value(default="postgres://localhost:5432/salt")
     ALLOWED_HOSTS = Value(
         default=["*"],
         help="Hosts allowed to serve the "
         "site "
-        "https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts",
+        "https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts",
     )
     HIDE_OUTPUT = Value(
         default=["pillar.*"],

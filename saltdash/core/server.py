@@ -6,6 +6,7 @@ import time
 from urllib.parse import quote
 
 import waitress
+
 from .. import config, wsgi
 
 log = logging.getLogger(__name__)

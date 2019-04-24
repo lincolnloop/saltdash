@@ -1,9 +1,15 @@
 # Changelog
 
-0.9.6 (unreleased)
+0.9.7 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+0.9.6 (2019-04-17)
+------------------
+
+- Dependency updates
 
 
 0.9.5 (2018-05-24)

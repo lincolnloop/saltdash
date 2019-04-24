@@ -16,9 +16,7 @@ def pretty_json(dict_val):
 
 @register.simple_tag
 def get_minions():
-    return (
-        Result.objects.order_by("minion").values_list("minion", flat=True).distinct()
-    )
+    return Result.objects.order_by("minion").values_list("minion", flat=True).distinct()
 
 
 @register.simple_tag(takes_context=True)

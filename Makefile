@@ -35,6 +35,7 @@ check: setup
 
 .PHONY: fmt
 fmt:
+	isort -m=3 --trailing-comma --line-width=88 --atomic $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 	black $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 
 version := $(shell python3 setup.py --version)
@@ -44,8 +45,10 @@ sha := $(shell git rev-parse HEAD)
 dist:
 	mkdir $@
 
-dist/saltdash-$(version)+$(sha)-$(platform).pyz: all | dist
-	shiv -e saltdash:config.django_manage -o $@ .
+dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
+	shiv -e saltdash:config.django_manage -o $@ \
+		 --site-packages=$(shell pipenv --venv)/lib/python3.6/site-packages \
+		 --no-deps .
 
 .PHONY: shiv
 shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz

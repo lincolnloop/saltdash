@@ -1,11 +1,10 @@
 from decimal import Decimal
 from unittest import TestCase
 
-from saltdash.dash.templatetags.dash_tags import pretty_time, clipped_page_range
+from saltdash.dash.templatetags.dash_tags import clipped_page_range, pretty_time
 
 
 class PrettyTimeTestCase(TestCase):
-
     def test_minutes(self):
         self.assertEqual(pretty_time(69305.23), "1:09.31 min")
 
@@ -17,7 +16,6 @@ class PrettyTimeTestCase(TestCase):
 
 
 class ClippedPageRangeTestCase(TestCase):
-
     def test_long(self):
         clipped = clipped_page_range(list(range(1, 21)), 10)
         self.assertListEqual(clipped, [1, 2, None, 8, 9, 10, 11, 12, None, 19, 20])
