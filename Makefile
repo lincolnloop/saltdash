@@ -18,9 +18,9 @@ client-build: client-install
 saltdash/static: client-build
 	SECRET_KEY=s poetry run saltdash collectstatic --noinput
 
-# Make will use the log file to determine if it is newer than pyproject.lock
+# Make will use the log file to determine if it is newer than poetry.lock
 # and this should be rerun.
-pyproject.log: pyproject.lock
+pyproject.log: poetry.lock
 	poetry install | tee $@
 
 .PHONY: setup
@@ -38,7 +38,7 @@ fmt:
 	isort -m=3 --trailing-comma --line-width=88 --atomic $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 	black $(shell find saltdash -name '*.py' -not -path "*/migrations/*")
 
-version := $(shell python3 setup.py --version)
+version := $(shell grep pyproject.toml -e '^version = ' | cut -f3 -d" " | tr -d '"')
 platform := $(shell python3 -c "import sysconfig as sc; print('py{}-{}'.format(sc.get_python_version().replace('.', ''), sc.get_platform()))")
 sha := $(shell git rev-parse HEAD)
 
@@ -46,9 +46,7 @@ dist:
 	mkdir $@
 
 dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
-	shiv -e saltdash:config.django_manage -o $@ \
-		 --site-packages=$(shell pipenv --venv)/lib/python3.6/site-packages \
-		 --no-deps .
+	shiv -e saltdash:config.django_manage -o $@ .
 
 .PHONY: shiv
 shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz
@@ -63,5 +61,5 @@ release: clean all
 .PHONY: clean
 clean:
 	rm -rf client/{node_modules,dist}
-	rm -rf saltdash/static dist saltdash.egg-info pyproject.log
-	#pipenv --venv && rm -rf $(shell pipenv --venv) || true
+	rm -rf saltdash/static dist pyproject.log
+	# poetry env remove
