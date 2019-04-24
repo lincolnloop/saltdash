@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "saltdash"
+version = "0.9.7.dev0"
+description = "A Dahsboard for SaltStack's Job Cache"
+readme = "README.md"
+authors = ["Peter Baumgartner <pete@lincolnloop.com>"]
+homepage = "https://github.com/lincolnloop/saltdash/"
+keywords = ["salt", "dashboard"]
+license = "MIT"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+]
+include = ["saltdash/templates/**/*", "saltdash/static/**/*"]
+
+[tool.poetry.dependencies]
+python = "^3.5"
+django = "~2.2"
+django-alive = "~1.0.1"
+dj-database-url = "0.5.0"
+goodconf = {version = "~1.0.0", extras = ["yaml"]}
+"psycopg2-binary" = "~2.8.2"
+python-json-logger = "~0.1.10"
+sentry-sdk = "~0.7.10"
+social-auth-app-django = "~3.1.0"
+pytest-cov = "~2.6.1"
+pytest-django = "~3.4.8"
+model-mommy = "~1.6.0"
+waitress = "~1.2.1"
+whitenoise = "~4.1.2"
+
+[tool.poetry.scripts]
+saltdash = "saltdash:config.django_manage"
+"manage.py" = "saltdash:config.django_manage"
+saltdash-generate-config = "saltdash:generate_config"
+
+[tool.poetry.dev-dependencies]
+isort = "^4.3"
+shiv = "^0.0.44"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -14,10 +14,10 @@ ENV LANG C.UTF-8
 
 ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /code
-RUN pip3 install --user pipenv shiv
+RUN pip3 install --user poetry shiv
 ADD . ./
 COPY --from=build-node /code/client/dist/ ./client/dist
-RUN set -ex && make setup && SECRET_KEY=s pipenv run saltdash collectstatic --noinput && make shiv
+RUN set -ex && make setup && SECRET_KEY=s poetry run saltdash collectstatic --noinput && make shiv
 
 FROM python:3.6-slim
 COPY --from=build-python /code/dist /dist

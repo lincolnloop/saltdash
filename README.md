@@ -16,7 +16,7 @@ Read-only web interface to read from Salt's [external job cache](https://docs.sa
 ### Pre-requisites
 
 * [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
-* [Pipenv](https://docs.pipenv.org/) for the back-end.
+* [Poetry](https://poetry.eustace.io/) for the back-end.
 * A Postgresql database
 
 ### Installation
@@ -26,7 +26,7 @@ git clone git@github.com:lincolnloop/saltdash.git
 cd saltdash
 make all              # download dependencies and build the world
 $EDITOR saltdash.yml  # change settings as needed
-pipenv shell          # activate the Python virtual environment
+poetry shell          # activate the Python virtual environment
 saltdash migrate      # setup the database
 saltdash runserver    # run a development server
 ```
