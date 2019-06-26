@@ -1,3 +1,5 @@
+/.env
+/.docker-env
 /saltdash.yml
 .pytest_cache
 .coverage
@@ -7,5 +9,6 @@ node_modules
 /client/dist
 /saltdash/static
 Pipfile.log
+/.venv
 /dist
 /build

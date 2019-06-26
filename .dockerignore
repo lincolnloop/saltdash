@@ -4,6 +4,7 @@
 /client/dist
 /saltdash/static
 /db.sqlite3
+/saltdash.yml
 *.egg-info
 *.sql
 /.venv

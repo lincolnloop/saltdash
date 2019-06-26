@@ -13,31 +13,21 @@ Read-only web interface to read from Salt's [external job cache](https://docs.sa
 
 ## Development
 
-### Pre-requisites
-
-* [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
-* [Pipenv](https://docs.pipenv.org/) for the back-end.
-* A Postgresql database
-
-### Installation
+A `docker-compose.yml` file is provided for local development. To get started:
 
 ```bash
-git clone git@github.com:lincolnloop/saltdash.git
-cd saltdash
-make all              # download dependencies and build the world
-$EDITOR saltdash.yml  # change settings as needed
-pipenv shell          # activate the Python virtual environment
-saltdash migrate      # setup the database
-saltdash runserver    # run a development server
+make .docker-env    # Setup the development environment
+docker-compose up   # Start up the containers
 ```
 
-### Client-side
+_Note: Docker is not a requirement for development. The individual services can
+be setup by reading the `docker-compose.yml` and associated Dockerfiles._
 
-Uses [parcel](https://parceljs.org/). To start a development environment with live reloading, run:
 
-```bash
-cd client
-yarn run watch
+### Testing
+
+```
+docker-compose run app saltdash test
 ```
 
 ## Running in Production

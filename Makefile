@@ -5,6 +5,16 @@ SHELL := bash
 .DELETE_ON_ERROR:
 .SUFFIXES:
 
+define DOTENV_EXAMPLE
+DEBUG=true
+SECRET_KEY=not-a-secret
+endef
+export DOTENV_EXAMPLE
+
+.docker-env:
+	@echo "$$DOTENV_EXAMPLE" > .docker-env
+	@echo "Local development environment settings written to .docker-env"
+
 client/node_modules: client/package.json client/yarn.lock
 	cd client; NOYARNBUILD=1 yarn install --production
 

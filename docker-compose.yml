@@ -1,0 +1,62 @@
+# Docker Compose is for *development*
+# Don't use in production!
+
+version: "3.2"
+
+services:
+  db:
+    image: postgres:11-alpine
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./data/db_dumps:/db_dumps
+    environment:
+      - PGUSER=postgres
+
+  client:
+    build: ./client
+    ports:
+      - 1234:1234
+    volumes:
+      - ./client:/app
+      - client:/app/dist
+      - /app/node_modules
+
+  db-migrate:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    env_file:
+      - .docker-env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/saltdash.egg-info
+      - /app/.venv
+    command: pipenv run saltdash migrate --noinput
+    environment:
+        - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+
+  app:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    tty: true
+    env_file:
+      - .docker-env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - client:/app/client/dist
+      - /app/saltdash.egg-info
+      - /app/.venv
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+
+volumes:
+    db:
+    client:

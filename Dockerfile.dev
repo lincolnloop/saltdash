@@ -1,0 +1,11 @@
+FROM python:3.6
+ENV LANG C.UTF-8
+
+ENV PATH="/app/.venv/bin:${PATH}" PIPENV_DEV=1 PIPENV_VENV_IN_PROJECT=1
+WORKDIR /app
+RUN python -m pip install -U pipenv pip
+COPY Pipfile Pipfile.lock setup.py setup.cfg ./
+COPY saltdash/__init__.py ./saltdash/
+RUN python -m pipenv install
+COPY . .
+CMD saltdash runserver 0:8000
