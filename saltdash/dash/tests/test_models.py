@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings
-from model_mommy import mommy
+from model_bakery import baker
 from saltdash.dash.models import Job, Result
 
 
@@ -19,8 +19,8 @@ class ModelTestCase(TestCase):
 
     @override_settings(HIDE_OUTPUT=["pillar.*"])
     def test_hidden_output(self):
-        result = mommy.prepare(Result, full_ret={"fun": "pillar.get"})
+        result = baker.prepare(Result, full_ret={"fun": "pillar.get"})
         self.assertEqual(result.result_type, "hidden")
 
-        result = mommy.prepare(Result, full_ret={"fun": "state.sls"})
+        result = baker.prepare(Result, full_ret={"fun": "state.sls"})
         self.assertNotEqual(result.result_type, "hidden")

@@ -1,8 +1,8 @@
 {
   "license": "MIT",
   "scripts": {
-    "postinstall": "test -n \"$NOYARNBUILD\" || yarn run build",
-    "build": "yarn run build:css && yarn run build:js && yarn run build:assets",
+    "postinstall": "test -n \"$NOBUILD\" || npm run build",
+    "build": "npm run build:css && npm run build:js && npm run build:assets",
     "build:css": "parcel build --no-autoinstall scss/app.scss",
     "build:js": "parcel build --no-autoinstall js/app.js",
     "build:assets": "rsync -av --delete ./assets ./dist/",

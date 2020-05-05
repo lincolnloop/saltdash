@@ -15,7 +15,7 @@ Read-only web interface to read from Salt's [external job cache](https://docs.sa
 
 ### Pre-requisites
 
-* [Yarn](https://yarnpkg.com/lang/en/docs/install/) for building the front-end.
+* Node.js for building the front-end.
 * [Pipenv](https://docs.pipenv.org/) for the back-end.
 * A Postgresql database
 

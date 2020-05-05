@@ -5,15 +5,15 @@ SHELL := bash
 .DELETE_ON_ERROR:
 .SUFFIXES:
 
-client/node_modules: client/package.json client/yarn.lock
-	cd client; NOYARNBUILD=1 yarn install --production
+client/node_modules: client/package.json client/package-lock.json
+	cd client; NOBUILD=1 npm install --production
 
 .PHONY: client-install
 client-install: | client/node_modules
 
 .PHONY: client-build
 client-build: client-install
-	cd client; yarn run build
+	cd client; npm run build
 
 saltdash/static: client-build
 	SECRET_KEY=s pipenv run saltdash collectstatic --noinput

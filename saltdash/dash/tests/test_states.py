@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from model_mommy import mommy
+from model_bakery import baker
 
 from ..models import Result, _convert_state
 
@@ -37,7 +37,7 @@ class StateTestCase(TestCase):
                 "__run_num__": 226,
             }
         }
-        result = mommy.prepare(Result, return_val=states_raw)
+        result = baker.prepare(Result, return_val=states_raw)
         self.assertEqual(len(result.states), 1)
         self.assertEqual(result.states_failed_requisite, 1)
         self.assertEqual(result.states_failed, 0)
@@ -87,5 +87,5 @@ class StateTestCase(TestCase):
                 "__run_num__": 81,
             },
         }
-        result = mommy.prepare(Result, return_val=states_raw)
+        result = baker.prepare(Result, return_val=states_raw)
         self.assertListEqual([s["order"] for s in result.states], [81, 137, 167, 226])
