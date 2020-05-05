@@ -3,7 +3,7 @@
 0.9.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix PyPI packaging
 
 
 0.9.7 (2020-05-05)
