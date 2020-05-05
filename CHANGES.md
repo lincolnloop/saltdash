@@ -3,7 +3,9 @@
 0.9.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Upgrade dependencies
+- Remove yarn in favor of npm
+- Fix issue in result format with recent Salt version
 
 
 0.9.6 (2019-04-17)
