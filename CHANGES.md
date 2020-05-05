@@ -1,6 +1,6 @@
 # Changelog
 
-0.9.7 (unreleased)
+0.9.7 (2020-05-05)
 ------------------
 
 - Upgrade dependencies
