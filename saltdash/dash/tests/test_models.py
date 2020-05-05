@@ -9,6 +9,11 @@ class ModelTestCase(TestCase):
         job = Job(load={"tgt": "minion", "tgt_type": "list"})
         self.assertListEqual(job.targets, ["minion"])
 
+    def test_missing_tgt(self):
+        # newer versions of salt don't always return a tgt
+        job = Job(load={"id": "minion"})
+        self.assertListEqual(job.targets, ["minion"])
+
     def test_list_targets(self):
         job = Job(load={"tgt": ["minion1", "minion2"], "tgt_type": "list"})
         self.assertListEqual(job.targets, ["minion1", "minion2"])

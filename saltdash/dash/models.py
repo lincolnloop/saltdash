@@ -54,8 +54,11 @@ class Job(models.Model):
 
     @property
     def targets(self) -> list:
-        tgt = self.load["tgt"]
-        if self.load["tgt_type"] == "list" and not isinstance(tgt, str):
+        try:
+            tgt = self.load["tgt"]
+        except KeyError:
+            tgt = self.load["id"]
+        if "tgt_type" in self.load and self.load["tgt_type"] == "list" and not isinstance(tgt, str):
             return tgt
         return [tgt]
 
