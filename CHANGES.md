@@ -1,6 +1,6 @@
 # Changelog
 
-0.9.8 (unreleased)
+0.9.8 (2020-05-05)
 ------------------
 
 - Fix PyPI packaging
