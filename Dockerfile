@@ -3,7 +3,7 @@ FROM node:8-alpine as build-node
 WORKDIR /code
 RUN apk --no-cache add make rsync bash
 COPY Makefile ./
-COPY client/package.json client/yarn.lock ./client/
+COPY client/package.json client/package-lock.json ./client/
 RUN make client-install
 
 COPY client/ ./client

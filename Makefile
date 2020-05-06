@@ -44,6 +44,14 @@ sha := $(shell git rev-parse HEAD)
 
 dist:
 	mkdir $@
+	python setup.py sdist
+	python setup.py bdist_wheel
+
+dist/saltdash-$(version).tar.gz:
+	python setup.py sdist
+
+dist/saltdash-$(version)-py2.py3-none-any.whl:
+	python setup.py bdist_wheel
 
 dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
 	shiv -e saltdash:config.django_manage -o $@ \
@@ -57,7 +65,7 @@ shiv: dist/saltdash-$(version)+$(sha)-$(platform).pyz
 all: setup saltdash/static
 
 .PHONY: release
-release: clean all
+release: clean all dist/saltdash-$(version).tar.gz dist/saltdash-$(version)-py2.py3-none-any.whl
 	pipenv run twine upload -s dist/*
 
 .PHONY: clean
