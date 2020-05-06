@@ -1,6 +1,6 @@
 # Changelog
 
-0.9.9 (unreleased)
+0.9.9 (2020-05-06)
 ------------------
 
 - Fix healthchecks after Django upgrade
