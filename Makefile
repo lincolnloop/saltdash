@@ -44,13 +44,11 @@ sha := $(shell git rev-parse HEAD)
 
 dist:
 	mkdir $@
-	python setup.py sdist
-	python setup.py bdist_wheel
 
-dist/saltdash-$(version).tar.gz:
+dist/saltdash-$(version).tar.gz: dist
 	python setup.py sdist
 
-dist/saltdash-$(version)-py2.py3-none-any.whl:
+dist/saltdash-$(version)-py2.py3-none-any.whl: dist
 	python setup.py bdist_wheel
 
 dist/saltdash-$(version)+$(sha)-$(platform).pyz: setup | dist
