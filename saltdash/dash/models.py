@@ -29,7 +29,7 @@ class Job(models.Model):
     def kwargs(self):
         for a in self.load["arg"]:
             if isinstance(a, dict) and a.get("__kwarg__"):
-                del (a["__kwarg__"])
+                del a["__kwarg__"]
                 return a
 
     @property
@@ -58,7 +58,11 @@ class Job(models.Model):
             tgt = self.load["tgt"]
         except KeyError:
             tgt = self.load["id"]
-        if "tgt_type" in self.load and self.load["tgt_type"] == "list" and not isinstance(tgt, str):
+        if (
+            "tgt_type" in self.load
+            and self.load["tgt_type"] == "list"
+            and not isinstance(tgt, str)
+        ):
             return tgt
         return [tgt]
 

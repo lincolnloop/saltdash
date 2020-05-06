@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
 from model_bakery import baker
+
 from saltdash.dash.models import Job, Result
 
 

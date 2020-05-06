@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
 import logging.config
+import os
 from pathlib import Path
 
 import dj_database_url
@@ -52,9 +52,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_REDIRECT_EXEMPT = [r"^-/"]  # django-alive URLs
 ALIVE_CHECKS = {
     "django_alive.checks.check_database": {},
-    "django_alive.checks.check_staticfile": {
-        "filename": "app.css",
-    },
+    "django_alive.checks.check_staticfile": {"filename": "app.css",},
 }
 
 
