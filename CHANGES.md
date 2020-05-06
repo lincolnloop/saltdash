@@ -3,7 +3,7 @@
 0.9.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix healthchecks after Django upgrade
 
 
 0.9.8 (2020-05-05)

@@ -31,7 +31,7 @@ class LoginRequiredMiddleware:
                 redirect_to = settings.LOGIN_URL
                 # Add 'next' GET variable to support redirection after login
                 if len(path) > 0 and is_safe_url(
-                    url=request.path_info, host=request.get_host()
+                    url=request.path_info, allowed_hosts={request.get_host()}
                 ):
                     redirect_to = "{}?next={}".format(
                         settings.LOGIN_URL, request.path_info
