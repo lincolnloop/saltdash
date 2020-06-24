@@ -1,0 +1,38 @@
+name: Saltdash
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build image
+      run: |
+        docker build -t ${{ github.repository }} .
+    - name: Setup Test Database
+      run: |
+        docker run --rm --detach -e POSTGRES_PASSWORD=password --name=postgres postgres:9.6-alpine
+        docker exec postgres sh -c "while ! pg_isready -h localhost; do sleep 1; done"
+    - name: Test
+      run: |
+        docker run --name=tests --link postgres:postgres \
+          -e SECRET_KEY=s \
+          -e "DATABASE_URL=postgres://postgres:password@postgres:5432/postgres" \
+          ${{ github.repository }} saltdash test -- --junitxml=.test-results/junit.xml
+        docker cp tests:/srv/saltdash/.test-results test-results
+        docker cp tests:/dist dist
+    - name: Teardown Test Database
+      run: docker kill postgres
+    - name: Push Artifact
+      run: |
+          export REPONAME=$(echo "${{ github.repository }}" | cut -f2 -d/)
+          export BRANCH=$(echo "${{ github.ref }}" | cut -f3 -d/)
+          aws s3 cp dist/*.pyz s3://${S3_PLATTER_BUCKET}/${REPONAME}/${BRANCH}/${{ github.sha }}.pyz --no-progress
+          echo ${{ github.sha }} | aws s3 cp - s3://${S3_PLATTER_BUCKET}/${REPONAME}/${BRANCH}/latest --no-progress
+      env:
+        S3_PLATTER_BUCKET: ll-platters
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
